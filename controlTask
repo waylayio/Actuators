@@ -1,0 +1,17 @@
+{
+    "name": "controlTask",
+    "version": "1.0.1",
+    "script": "var taskID = options.requiredProperties.taskId || options.task.TASK_ID;\nvar command = options.requiredProperties.command;\nvar username =  options.globalSettings.API_KEY;\nvar password = options.globalSettings.API_PASS;\n\nrequest.post(\n    'https://'+ username + ':' + password +'@app.waylay.io/api/tasks/'+taskID+'/command/'+command,\n    function (error, response, body) {\n        if (!error && response.statusCode == 200) {\n            send();\n        } else\n            send(new Error(\"Error executing the action\"));\n    }\n);\n",
+    "metadata": {
+        "author": "",
+        "category": "Experimental",
+        "description": "Control task actuator",
+        "iconURL": "http://www.luanamedia.ro/wp-content/uploads/2014/03/total_control.jpg",
+        "supportedStates": [],
+        "requiredProperties": [
+            "command",
+            "taskId"
+        ],
+        "requiredRawData": []
+    }
+}
