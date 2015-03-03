@@ -1,0 +1,16 @@
+{
+  "name": "alarmDialog",
+  "version": "0.0.3",
+  "script": "var parsedMessage =  \"ALERT\";\nif(options.requiredProperties.message)\n    parsedMessage = waylayUtil.evaluateData(options, options.requiredProperties.message);\nsend(null, {message: parsedMessage});",
+  "metadata": {
+    "author": "",
+    "category": "Experimental",
+    "description": "Window message actuator",
+    "iconURL": "http://files.softicons.com/download/internet-icons/speech-bubbles-icons-by-curtivearticide/png/256/speechbubble_pink.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "message"
+    ],
+    "requiredRawData": []
+  }
+}
