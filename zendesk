@@ -1,0 +1,18 @@
+{
+      "name": "zendesk",
+      "version": "1.0.1",
+      "script": "var username =  options.globalSettings.ZENDESK_USER;\nvar token = options.globalSettings.ZENDESK_KEY;\nvar subject = options.requiredProperties.subject;\nvar message = waylayUtil.evaluateData(options, options.requiredProperties.message);\n\nconsole.log(message);\n\nif(username && token && subject && message){\n\n  var url = \"https://\"+ username + ':' + token +\"@waylay.zendesk.com/api/v2/tickets.json\";\n  var data = {\n      \"ticket\" : {\n          \"requester\" : {\n              \"name\" : \"waylayPlatform\",\n          }, \"subject\" : subject,\n              \"comment\" : message\n      }\n  }\n  var options = {\n    url: url,\n    json: data\n  };\n\n  var callback = function(error, response, body) {\n    if (!error && (response.statusCode == 200 || response.statusCode == 201)) {\n      send();\n    }else{\n      console.log(response);\n      send(new Error(\"Calling zensdesk failed: \" + response));\n    }\n  };\n\n  request.post(options, callback);\n}else{\n  send(new Error(\"Missing properties\"));\n}\n\n\n",
+      "metadata": {
+        "author": "",
+        "category": "Experimental",
+        "description": "Zendesk actuator",
+        "documentationURL": "https://support.zendesk.com/hc/en-us/articles/203691216-Zendesk-REST-API-tutorial-PHP-edition",
+        "iconURL": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRZF1uoezoRdwGN4dSlRfLUuBY__X6ihHTMD0fpipCwNcfAbuIY",
+        "supportedStates": [],
+        "requiredProperties": [
+          "subject",
+          "message"
+        ],
+        "requiredRawData": []
+      }
+    }
