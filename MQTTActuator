@@ -1,0 +1,18 @@
+{
+    "metadata": {
+        "author": "",
+        "category": "MQTT",
+        "description": "MQTT actuator\n<h3>Inputs</h3>\n<ul>\n<li>resource<li/>\n<li>message in JSON format</li>\n</ul>\n\nFor more, check databridge documentation",
+        "iconURL": "https://lh4.ggpht.com/nVIwlr7yRPdoz8GUayNSsKoKAyJ3TLA83NNfln87jMOStFxMm3tVEX8lNIPQHfLlPdc=w300",
+        "supportedStates": [],
+        "requiredProperties": [
+            "resource",
+            "message"
+        ],
+        "requiredRawData": []
+    },
+    "script": "var client  = mqtt.connect('tcp://data.waylay.io:1883');\nvar topic = \"/global.waylay.io/\"+ options.requiredProperties.resource || \"test\";\nvar message = options.requiredProperties.message;\nconsole.log(message);\n\nif(topic && message){\n    client.on('connect', function () {\n      client.subscribe(topic);\n      var res = client.publish(topic, message);\n      send();\n    });\n}else{\n  send(new Error(\"Missing properties\"));\n}\n",
+    "name": "MQTTClient",
+    "version": "0.0.1",
+    "type": "actuator"
+}
