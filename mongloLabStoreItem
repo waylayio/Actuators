@@ -1,0 +1,20 @@
+{
+    "name": "mongloLabStoreItem",
+    "version": "1.0.1",
+    "type": "actuator",
+    "script": "var db = options.requiredProperties.db || options.globalSettings.mongodb;\nvar token = options.requiredProperties.token || options.globalSettings.mongoKey;\nvar actuatorName = options.requiredProperties.name || \"mongoLab\";\n\nvar data = {\n    node: options.node.NODE,\n    resource: options.node.RESOURCE || options.task.RESOURCE,\n    name : actuatorName,\n    time: new Date()\n}\n\nif(token && db && actuatorName){\n  var url = \"https://api.mongolab.com/api/1/databases/\" + db + \"/collections/\"+ \"task_\"+ options.task.TASK_ID +\"?apiKey=\"+token;\n  var options = {\n    url: url,\n    json: data\n  };\n  var callback = function(error, response, body) {\n    if (!error && response.statusCode == 200) {\n      console.log(body);\n      send();\n    }else{\n      send(new Error(\"Calling mongolab failed: \" + error + \" \" + body));\n    }\n  };\n  request.post(options, callback);\n}else{\n  send(new Error(\"Missing properties\"));\n}",
+    "metadata": {
+        "author": "",
+        "category": "Experimental",
+        "description": "mongloLabStoreItem actuator stores in the mongolab \nunder database task_{TASK_ID} the following entries:\n\n<ul>\n<li>resource: resource</li>\n<li>node: node name</li>\n<li>node resource ID</li>\n<li>name: arbitary name (see properties below)</li>\n<li>time: time it was triggered, in UTC milis</li>\n</ul>\n\nProperties:\n<ul>\n<li>db: database name</li>\n<li>token: mongo token, unless defined in GLOBAL settings</li>\n<li>name: name of the actutator</li>\n</ul>",
+        "documentationURL": "http://docs.mongolab.com/restapi/",
+        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/mongloLabStoreItem.png",
+        "supportedStates": [],
+        "requiredProperties": [
+            "db",
+            "token",
+            "name"
+        ],
+        "requiredRawData": []
+    }
+}
