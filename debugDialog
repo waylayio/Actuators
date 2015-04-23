@@ -1,0 +1,17 @@
+{
+    "name": "debugDialog",
+    "version": "1.0.1",
+    "type": "actuator",
+    "script": "var parsedMessage =  \"ALERT\";\nif(options.requiredProperties.message)\n    parsedMessage = waylayUtil.evaluateData(options, options.requiredProperties.message);\nsend(null, {message: parsedMessage});",
+    "metadata": {
+        "author": "",
+        "category": "Debug",
+        "description": "Debug dialog actuator, to be used while debuging new templates.\nMessage will pop up in the debug window. Message is processed using \nwaylayUtil.evaluateData package.",
+        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/bubble.png",
+        "supportedStates": [],
+        "requiredProperties": [
+            "message"
+        ],
+        "requiredRawData": []
+    }
+}
