@@ -1,6 +1,6 @@
 {
     "name": "sendTweet",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "type": "actuator",
     "script": "//just to make sure that we don't send the tweet by mistake\nvar OAuthConsumerKey = options.globalSettings.TEST_OAuthConsumerKey;\nvar OAuthConsumerSecret = options.globalSettings.TEST_OAuthConsumerSecret;\nvar OAuthAccessToken = options.globalSettings.TEST_OAuthAccessToken;\nvar OAuthAccessTokenSecret = options.globalSettings.TEST_OAuthAccessTokenSecret;\n\nvar sendClient = new twitter({\n  consumer_key: OAuthConsumerKey,\n  consumer_secret: OAuthConsumerSecret,\n  access_token_key: OAuthAccessToken,\n  access_token_secret: OAuthAccessTokenSecret\n});\n\n\ntry{\n    if(options.requiredProperties.message) {\n    var message = {\n        status:  waylayUtil.evaluateData(options, options.requiredProperties.message)\n    }\n    try{\n        sendClient.post('statuses/update', message, function(error, tweet, response){\n         if(error) throw error;\n        console.log(tweet);  // Tweet body. \n        console.log(response);  // Raw response object. \n        send();\n        });\n    } catch(err){\n        send(err);\n    }\n    } else {\n         send(new Error(\"Missing message\"));\n    }\n} catch(err){\n    send(new Error(err));\n}\n",
     "metadata": {
