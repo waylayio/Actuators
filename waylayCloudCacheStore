@@ -1,0 +1,20 @@
+{
+    "name": "waylayCloudCacheStore",
+    "version": "0.0.4",
+    "type": "actuator",
+    "script": "var resource  = options.requiredProperties.resource || options.node.RESOURCE || options.node.NAME;\n\nvar username =  options.globalSettings.API_KEY;\nvar password = options.globalSettings.API_PASS;\nvar domain = options.requiredProperties.domain || \"app.waylay.io\";\n\n\nvar msg;\nif(options.requiredProperties.message)\n    msg = waylayUtil.evaluateData(options, options.requiredProperties.message);\nelse\n  msg = waylayUtil.getRawData(options, thing);\n\nif(thing  !== undefined && msg !== undefined){\n  var url = \"https://data.waylay.io/resources/\"+ resource +\"?domain=\"+domain;\n  var options = {\n    url: url,\n    json: msg,\n    auth: {\n        user: username,\n        pass: password,\n        sendImmediately: true\n    }\n  };\n  var callback = function(error, response, body) {\n    if (!error && response.statusCode == 200) {\n      send();\n    }else{\n      console.log(body);\n      send(new Error(\"Failed: \" + error + \" \" + body));\n    }\n  };\n  request.post(options, callback);\n}else{\n  send(new Error(\"Missing properties\"));\n}",
+    "metadata": {
+        "author": "",
+        "category": "Waylay",
+        "description": "waylayCloudCacheStore will store the message in the the waylay cloud cache.\n\nActuator will post a message using the resource as the identifier.\nInput parameters are:\n<ul>\n<li>domain, default app.waylay.io</li>\n<li>resource, if not provided it will take the resource or the node name</li>\n<li>message, which will be pre-processed with  waylayUtil.evaluateData or if not provided, will use the raw data of the item</li>\n</ul>\n\nFor more info, please check the documentation on the waylay broker and cloud cache.\n\n\n",
+        "documentationURL": "",
+        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/waylay.png",
+        "supportedStates": [],
+        "requiredProperties": [
+            "domain",
+            "resource",
+            "message"
+        ],
+        "requiredRawData": []
+    }
+}
