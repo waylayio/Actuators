@@ -8,7 +8,7 @@
         "category": "Waylay",
         "description": "waylayCloudCacheStore will store the message in the the waylay cloud cache.\n\nActuator will post a message using the resource as the identifier.\nInput parameters are:\n<ul>\n<li>domain, default app.waylay.io</li>\n<li>resource, if not provided it will take the resource or the node name</li>\n<li>message, which will be pre-processed with  waylayUtil.evaluateData or if not provided, will use the raw data of the item</li>\n</ul>\n\nFor more info, please check the documentation on the waylay broker and cloud cache.\n\n\n",
         "documentationURL": "",
-        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/waylay.png",
+        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/persisted_cache.png",
         "supportedStates": [],
         "requiredProperties": [
             "domain",
