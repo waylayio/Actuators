@@ -1,16 +1,16 @@
 {
-    "name": "debugActuatorData",
-    "version": "1.0.1",
+    "name": "debugDialog",
+    "version": "1.0.3",
     "type": "actuator",
-    "script": "var nodeName = options.requiredProperties.nodeName || options.node.NAME;\nlogger.info(options.actuatorData);\n\nif(!options.actuatorData || !options.actuatorData[nodeName]){\n    logger.info(\"testActuatorData found NOTHING\");\n    send();\n}\nelse{\n    logger.info(options.actuatorData[nodeName])\n    var parsedMessage = options.actuatorData[nodeName].message;\n    var data = JSON.parse(parsedMessage);\n    logger.info(data);\n    send(null, {message: parsedMessage});\n}",
+    "script": "var parsedMessage =  \"ALERT\";\nif(options.requiredProperties.message)\n    parsedMessage = waylayUtil.evaluateData(options, options.requiredProperties.message);\nif(typeof parsedMessage != 'string'){\n   parsedMessage = JSON.stringify(parsedMessage);\n}\nsend(null, {message: parsedMessage});",
     "metadata": {
         "author": "",
-        "category": "Experimental",
-        "description": "This actuator test parsing of the actuator data.\nInput paramter is the node to which the actuator is attached. \nFor more info, please check the documentation on actuatorData.",
-        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/alarm.png",
+        "category": "Debug",
+        "description": "Debug dialog actuator, to be used while debuging new templates.\nMessage will pop up in the debug window. Message is processed using \nwaylayUtil.evaluateData package.",
+        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/bubble.png",
         "supportedStates": [],
         "requiredProperties": [
-            "nodeName"
+            "message"
         ],
         "requiredRawData": []
     }
