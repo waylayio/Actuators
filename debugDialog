@@ -1,8 +1,8 @@
 {
     "name": "debugDialog",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "type": "actuator",
-    "script": "var parsedMessage =  \"ALERT\";\nif(options.requiredProperties.message)\n    parsedMessage = waylayUtil.evaluateData(options, options.requiredProperties.message);\nsend(null, {message: parsedMessage});",
+    "script": "var parsedMessage =  \"ALERT\";\nif(options.requiredProperties.message)\n    parsedMessage = waylayUtil.evaluateData(options, options.requiredProperties.message);\nif(typeof parsedMessage != 'string'){\n   parsedMessage = JSON.stringify(parsedMessage);\n}\nsend(null, {message: parsedMessage});",
     "metadata": {
         "author": "",
         "category": "Debug",
