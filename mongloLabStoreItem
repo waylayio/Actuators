@@ -1,19 +1,19 @@
 {
-    "name": "mongloLabStoreItem",
-    "version": "1.0.1",
+    "name": "waylayCloudCacheStore",
+    "version": "1.1.6",
     "type": "actuator",
-    "script": "var db = options.requiredProperties.db || options.globalSettings.mongodb;\nvar token = options.requiredProperties.token || options.globalSettings.mongoKey;\nvar actuatorName = options.requiredProperties.name || \"mongoLab\";\n\nvar data = {\n    node: options.node.NODE,\n    resource: options.node.RESOURCE || options.task.RESOURCE,\n    name : actuatorName,\n    time: new Date()\n}\n\nif(token && db && actuatorName){\n  var url = \"https://api.mongolab.com/api/1/databases/\" + db + \"/collections/\"+ \"task_\"+ options.task.TASK_ID +\"?apiKey=\"+token;\n  var options = {\n    url: url,\n    json: data\n  };\n  var callback = function(error, response, body) {\n    if (!error && response.statusCode == 200) {\n      console.log(body);\n      send();\n    }else{\n      send(new Error(\"Calling mongolab failed: \" + error + \" \" + body));\n    }\n  };\n  request.post(options, callback);\n}else{\n  send(new Error(\"Missing properties\"));\n}",
+    "script": "var resource  = options.requiredProperties.resource || options.node.RESOURCE || options.node.NAME;\n\nvar username =  options.globalSettings.API_KEY;\nvar password = options.globalSettings.API_PASS;\nvar domain = options.requiredProperties.domain;\nvar payload = options.requiredProperties.payload;\n\nvar msg;\n\nif(domain){\n    if(payload){\n        try{\n           msg = waylayUtil.evaluateData(options, payload);    \n           if (typeof msg === 'string') {\n               console.log(\"trying to parse to JSON\");\n                msg = JSON.parse(msg);\n            }\n            console.log(\"Parsed using eval\");\n            console.log(msg);\n        } catch(err){\n            console.log(\"eval failed with \" + err);\n            console.log(\"trying using raw data\");\n            try {\n                msg = waylayUtil.getRawData(options, payload);\n            } catch(err){\n                console.log(\"raw data failed with \" + err);\n            }\n        } \n    }\n} else {\n    try {\n        msg = waylayUtil.getRawData(options, options.node.NAME);\n    } catch(err){\n        console.log(\"trying raw data failed for: \" + options.node.NAME);\n    }\n}\n\n\nif(msg !== undefined){\n  console.log(msg);\n  var url = \"https://data.waylay.io/resources/\"+ resource +\"?domain=\"+domain;\n  var options = {\n    url: url,\n    json: msg,\n    auth: {\n        user: username,\n        pass: password,\n        sendImmediately: true\n    }\n  };\n  console.log(\"posting \"+ JSON.stringify(msg) + \", to \" + resource);\n  request.post(options, function(error, response, body) {\n    if (!error && response.statusCode == 200) {\n      send();\n    }else{\n      console.log(body);\n      send(new Error(\"DATA BRIDGE Failed: \" + error + \" \" + body));\n    }\n  });\n} else{\n  send(new Error(\"Missing properties: [domain OR msg]\"));\n}",
     "metadata": {
         "author": "",
-        "category": "Experimental",
-        "description": "mongloLabStoreItem actuator stores in the mongolab \nunder database task_{TASK_ID} the following entries:\n\n<ul>\n<li>resource: resource</li>\n<li>node: node name</li>\n<li>node resource ID</li>\n<li>name: arbitary name (see properties below)</li>\n<li>time: time it was triggered, in UTC milis</li>\n</ul>\n\nProperties:\n<ul>\n<li>db: database name</li>\n<li>token: mongo token, unless defined in GLOBAL settings</li>\n<li>name: name of the actutator</li>\n</ul>",
-        "documentationURL": "http://docs.mongolab.com/restapi/",
-        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/mongolab.png",
+        "category": "Waylay",
+        "description": "waylayCloudCacheStore will store the payload in the the waylay cloud cache using the broker.\n\nActuator will post a payload using the resource as the identifier.\nInput parameters are:\n<ul>\n<li>domain (must be provided)</li>\n<li>resource, if not provided it will use as the resouece the node's resource name OR the name of the node</li>\n<li>payload (must be provided), which will be pre-processed with  waylayUtil.evaluateData or if not provided, will use the raw data of the item</li>\n</ul>\n\nNote that the broker <strong>will not only store the data, but will also forward (back) the resource and the payload as the stream data to the platform. </stronng>\nThat way you can for instance use pull sensor to inject data to all other tasks via the stream data interface. \nFor more info, please check the documentation on the waylay broker and cloud cache.\n\n\n",
+        "documentationURL": "",
+        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/persisted_cache.png",
         "supportedStates": [],
         "requiredProperties": [
-            "db",
-            "token",
-            "name"
+            "domain",
+            "resource",
+            "payload"
         ],
         "requiredRawData": []
     }
