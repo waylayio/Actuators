@@ -1,0 +1,17 @@
+{
+    "name": "scriptActuator",
+    "version": "0.0.1",
+    "type": "actuator",
+    "script": "if(!options.requiredProperties.script || options.requiredProperties.script.indexOf(\"send\") < 0){\n     send(new Error(\"script not correct!\"));\n}\nelse{\n    try{\n        eval(options.requiredProperties.script);\n    } catch(err){\n        send(new Error(err));\n    }\n}\n",
+    "metadata": {
+        "author": "",
+        "category": "Experimental",
+        "description": "Script actuator let you execute the script directly.\nPlease be aware that script in the end <strong>must return back send(null)</strong>",
+        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/code.png",
+        "supportedStates": [],
+        "requiredProperties": [
+            "script"
+        ],
+        "requiredRawData": []
+    }
+}
