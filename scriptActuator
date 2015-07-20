@@ -1,8 +1,8 @@
 {
     "name": "scriptActuator",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "type": "actuator",
-    "script": "if(!options.requiredProperties.script || options.requiredProperties.script.indexOf(\"send\") < 0){\n     send(new Error(\"script not correct!\"));\n}\nelse{\n    try{\n        eval(options.requiredProperties.script);\n    } catch(err){\n        send(new Error(err));\n    }\n}\n",
+    "script": "if(!options.requiredProperties.script || options.requiredProperties.script.indexOf(\"send\") < 0){\n     send(new Error(\"script not correct!, you need to send back at least this: send(null, {observedState : .....})\"));\n}\nelse{\n    try{\n        eval(options.requiredProperties.script);\n    } catch(err){\n        send(new Error(err));\n    }\n}\n",
     "metadata": {
         "author": "",
         "category": "Experimental",
