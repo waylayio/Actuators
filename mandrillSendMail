@@ -6,7 +6,7 @@
     "metadata": {
         "author": "",
         "category": "Mail",
-        "description": "Mandrill actuator.\ne-mail input can as well be the sensor that retuns e-mail in rawData format {e-mail : \"example@gmail.com\"}.\nIn that case you need to put in options.requiredProperties.to a sensor name\nMessage will be parsed using waylayUtil.evaluateData function.\n\nInput parameters are:\n<ul>\n<li>from</li>\n<li>to</li>\n<li>message</li>\n<li>subject</li>\n</ul>\n\nActuator requires <strong>MANDRILL_KEY</strong> in the global settings\n",
+        "description": "Sends e-mails using the <a href=\"https://www.mandrill.com/\">Mandrill</a> saas infrastructure. \n\nInput parameters are:\n<ul>\n<li>from: sender email address</li>\n<li>to: the email address or the sensor that retuns e-mail in rawData format {e-mail : \"example@gmail.com\"}.\nIn that case you need to put in options.requiredProperties.to a sensor name</li>\n<li>message: parsed using waylayUtil.evaluateData function (waylay expression language)</li>\n<li>subject: email subject</li>\n</ul>\n\nActuator requires <strong>MANDRILL_KEY</strong> in the global settings\n",
         "documentationURL": "",
         "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/mandrillMail.png",
         "supportedStates": [],
