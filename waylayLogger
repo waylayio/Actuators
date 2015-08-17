@@ -6,7 +6,7 @@
     "metadata": {
         "author": "",
         "category": "Waylay",
-        "description": "waylayLogger will post the message with item as the resource indentifier for the waylay broker.\nThis actuator is not using API keys, which means that the data access is global.\n\nActuator will post a message using the item as the identifier.\nInput parameters are:\n<ul>\n<li>item, if not provided it will take the resource or node name</li>\n<li>message, which will be pre-processed with  waylayUtil.evaluateData</li>\n</ul>\n\nData paylod:\n<ul>\n<li>task ID</li>\n<li>time, in UTC milis</li>\n<li>message, which will be pre-processed with  waylayUtil.evaluateData</li>\n</ul>\n\nFor more info, please check the documentation on waylay broker and cache.\n\n\n",
+        "description": "waylayLogger will post the message with item as the resource identifier for the waylay broker.\nThis actuator is not using API keys, which means that the data access is global.\n\nActuator will post a message using the item as the identifier.\nInput parameters are:\n<ul>\n<li>item, if not provided it will take the resource or node name</li>\n<li>message, which will be pre-processed with  waylayUtil.evaluateData</li>\n</ul>\n\nData payload:\n<ul>\n<li>task ID</li>\n<li>time, in UTC milis</li>\n<li>message, which will be pre-processed with  waylayUtil.evaluateData</li>\n</ul>\n\nFor more info, please check the documentation on waylay broker and cache.\n\n\n",
         "documentationURL": "",
         "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/waylay.png",
         "supportedStates": [],
