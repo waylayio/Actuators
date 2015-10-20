@@ -1,0 +1,20 @@
+{
+  "name": "xivelyActuator",
+  "version": "0.0.1",
+  "type": "actuator",
+  "script": "var token = options.requiredProperties.key || options.globalSettings.XIVELY_KEY;\nvar resource  = options.requiredProperties.feed || \n      options.requiredProperties.resource || options.node.RESOURCE ||  options.task.RESOURCE || options.node.NAME;\nvar payload = options.requiredProperties.payload;\nvar msg;\n\n\nvar storeMessage = function(msg){\n    var deferred = Q.defer();\n    console.log(\"storing message \" + JSON.stringify(msg));\n      var options = {\n        url: 'https://api.xively.com/v2/feeds/' + resource + \"/datastreams/\" +__.keys(msg)[0],\n        json:{\n            \"version\":\"1.0.0\",\n            \"id\": __.keys(msg)[0],\n            \"current_value\" :  __.values(msg)[0]\n        },\n        \n        headers: {\n             'X-ApiKey': token\n        }\n    };\n    \n    request.put(options, function(error, response, body) {\n        if (!error && response.statusCode == 200) {\n            console.log(response);\n            console.log(\"message stored \" + JSON.stringify(msg));\n            deferred.resolve(response);\n        } else{\n            console.log(response);\n            deferred.reject(response);\n        }\n    });\n    return deferred.promise;\n}\n\n\nif(token){\n    if(payload){\n        try{\n           msg = waylayUtil.evaluateData(options, payload);    \n           if (typeof msg === 'string') {\n               console.log(\"trying to parse to JSON\");\n                msg = JSON.parse(msg);\n            }\n            console.log(\"Parsed using eval\");\n            console.log(msg);\n        } catch(err){\n            console.log(\"eval failed with \" + err);\n            console.log(\"trying using raw data\");\n            try {\n                msg = waylayUtil.getRawData(options, payload);\n            } catch(err){\n                console.log(\"raw data failed with \" + err);\n            }\n        } \n    } else {\n        try {\n            msg = waylayUtil.getRawData(options, options.node.NAME);\n        } catch(err){\n            console.log(\"trying raw data failed for: \" + options.node.NAME);\n        }\n    }\n    if(msg !== undefined || (Array.isArray(msg) && msg.length !== 0)){\n        if(!Array.isArray(msg)){\n            msg = [msg];\n        }\n        var promises = msg.map(function(q) {\n            if(__.keys(q).length == 1){\n                return storeMessage(q); \n            } else {\n                //xively can't send key/values from a single object\n                var mm = __.map(__.keys(q), function(key){\n                    var toSend = {};\n                    toSend[key] = q[key];\n                    return storeMessage(toSend);\n                });\n                return mm;\n            }\n        });\n        promises = __.flatten(promises);\n        console.log(\"sending..\");\n        Q.all(promises).then(function(){\n            console.log(\"DONE\"); \n            send();\n        }).fail(function(err){\n            send(new Error(\"Storing data failed\"));\n        });\n    } else{\n        send(new Error(\"Missing properties: [msg]\"));\n    }\n} else{\n    send(new Error(\"Missing token\"));\n}\n\n",
+  "metadata": {
+    "author": "Veselin",
+    "category": "IOT Platforms",
+    "description": "xivelyActuator\nPayload can be something like:\n<pre>\n[{ x : 24, z : 23 },{ y : 4}]\n</pre>",
+    "documentationURL": "https://personal.xively.com/dev/docs/api/data/write/multiple_datapoints_to_single_datastream/",
+    "iconURL": "https://d15n4q3o4x3svq.cloudfront.net/assets/tutorials/xively/xively-a3a5ade94230669d1a0d82473b025c93.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "key",
+      "feed",
+      "payload"
+    ],
+    "requiredRawData": []
+  }
+}
