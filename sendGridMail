@@ -1,0 +1,21 @@
+{
+  "name": "sendGridMail",
+  "version": "0.0.1",
+  "type": "actuator",
+  "script": "/*\ne-mail input can as well be the sensor that retuns e-mail in rawData in format {e-mail : \"example@gmail.com\"}.\nIn that case you need to put in options.requiredProperties.to a sensor name\n*/\nvar e_mail;\ntry{\n    e_mail= waylayUtil.evaluateData(options, options.requiredProperties.to);    \n} catch(err){\n    console.log(err);\n}\n\nvar TO = e_mail || options.requiredProperties.to;\n\nif(options.globalSettings.SENDGRID_KEY === undefined || options.requiredProperties.message === undefined ||\n    options.requiredProperties.subject === undefined || options.requiredProperties.from === undefined || \n    TO === undefined){\n        send(new Error(\"Error missing properties\"));\n    }\nelse {\n    if(waylayUtil.validateEmail(TO) && waylayUtil.validateEmail(options.requiredProperties.from) ){\n        var message = {\n            html: waylayUtil.template(options, options.requiredProperties.message),\n            subject:  waylayUtil.template(options, options.requiredProperties.subject),\n            from: options.requiredProperties.from,\n            to: TO\n        };\n\n        var requestOptions = {\n          url: 'https://api.sendgrid.com/api/mail.send.json',\n          formData: message,\n          'auth': {\n                'bearer':  options.globalSettings.SENDGRID_KEY \n            }\n        };\n\n        request.post(requestOptions, function (error, response, body) {\n          console.log(response);\n          if (!error && response.statusCode == 200) {\n            //console.log(response);\n            send();\n          }else{\n              send(new Error( response ));\n          }\n        });\n    } else{\n        var message = \"Emails are not valid: to=\" + TO + \", from=\" + options.requiredProperties.from;\n        console.log(message);\n        //logger.error(message);\n        send(new Error(message));\n    }\n}\n\n      ",
+  "metadata": {
+    "author": "",
+    "category": "Mail",
+    "description": "SendGrid mail actuator.\nMessage and subject are parsed using waylayUtil.template function.\n\nInput parameters are:\n<ul>\n<li>from</li>\n<li>to</li>\n<li>message</li>\n<li>subject</li>\n</ul>\n\nActuator requires <strong>SENDGRID_KEY</strong> in the global settings\n",
+    "documentationURL": "https://sendgrid.com/docs",
+    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/sendgrid-128.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "from",
+      "to",
+      "message",
+      "subject"
+    ],
+    "requiredRawData": []
+  }
+}
