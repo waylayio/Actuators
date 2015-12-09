@@ -8,7 +8,7 @@
     "category": "Enterprise",
     "description": "Creates JIRA ticket.\nYou will need to provide the following JIRA global settings\n<ul>\n<li>JIRA_USER</li>\n<li>JIRA_PASSWORD</li>\n<li>JIRA_URL</li>\n</ul>\n\nInput parameters are:\n<ul>\n<li>project</li>\n<li>message</li>\n<li>subject</li>\n<li>type (Task, Bug ...)</li>\n</ul>\n\nMessage will be parsed using waylayUtil.evaluateData function.\n",
     "documentationURL": "https://developer.atlassian.com/jiradev/jira-apis/jira-rest-apis/jira-rest-api-tutorials/jira-rest-api-example-create-issue",
-    "iconURL": "http://www.j-tricks.com/uploads/5/0/1/5/5015576/jira_icon.png",
+    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/jira.png",
     "supportedStates": [],
     "requiredProperties": [
       "subject",
