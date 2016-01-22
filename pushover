@@ -7,8 +7,8 @@
     "author": "",
     "category": "Messaging",
     "description": "Pushover actuator",
-    "documentationURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/pushover.png",
-    "iconURL": "https://pushover.net/api#messages",
+    "documentationURL": "https://pushover.net/api#messages",
+    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/pushover.png",
     "supportedStates": [],
     "requiredProperties": [
       "message",
