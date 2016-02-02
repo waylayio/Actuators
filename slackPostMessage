@@ -1,0 +1,20 @@
+{
+  "name": "slackPostMessage",
+  "version": "0.0.4",
+  "type": "actuator",
+  "script": "var channel = options.requiredProperties.channel;\nvar message = options.requiredProperties.message;\nvar token = options.globalSettings.SLACK_KEY;\nvar method = options.requiredProperties.method || 'chat.postMessage';\n\nif(token === undefined || channel === undefined || message === undefined){\n    send(new Error(\"Error missing properties\"));\n} else {\n        \n        var requestOptions = {\n          url: 'https://slack.com/api/' + method,\n          qs: {\n              text: message,\n              channel: channel,\n              token: token\n          }\n        };\n        request.post(requestOptions, function (error, response, body) {\n            try{\n                console.log(body);\n                var res = JSON.parse(body);\n                if (!error && res.ok) {\n                    send();\n                }else{\n                 send(new Error(res.error));\n                }\n            } catch(err){\n                send(new Error(err));\n            }\n       \n        });\n}\n\n      ",
+  "metadata": {
+    "author": "Veselin",
+    "category": "Slack",
+    "description": "",
+    "documentationURL": "https://api.slack.com/methods/chat.postMessage",
+    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/slack.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "message",
+      "channel",
+      "method"
+    ],
+    "requiredRawData": []
+  }
+}
