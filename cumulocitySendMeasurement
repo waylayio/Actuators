@@ -8,7 +8,7 @@
     "category": "IOT Platforms",
     "description": "cumulocitySendMeasurement, if time not provided it will take a current time.\n<br>\nFor other input arguments, please consult the documentation.",
     "documentationURL": "http://www.cumulocity.com/guides/reference/measurements/",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/cumulocity.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/cumulocity.png",
     "supportedStates": [],
     "requiredProperties": [
       "type",

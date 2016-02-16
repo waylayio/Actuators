@@ -8,7 +8,7 @@
     "category": "Social",
     "description": "This actuator sends a Twitter <strong>direct message</strong>.\n<pre>\n    Make sure you follow <a href=\"https://twitter.com/waylay_io\">@waylay_io</a> otherwise you won't be able to receive the messages.\n</pre>\nMessage is pre-processed using waylayUtil.template package.\n\nYou will need to get twitter API keys by registering your app, \nand provide these keys in the global settings.\n",
     "documentationURL": "",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/sendTwitterDM.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/sendTwitterDM.png",
     "supportedStates": [],
     "requiredProperties": [
       "message",

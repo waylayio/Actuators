@@ -7,7 +7,7 @@
         "author": "",
         "category": "Experimental",
         "description": "Script actuator let you execute the script directly.\nPlease be aware that script in the end <strong>must return back send(null)</strong>",
-        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/code.png",
+        "iconURL": "https://static.waylay.io/plugs/icons/code.png",
         "supportedStates": [],
         "requiredProperties": [
             "script"

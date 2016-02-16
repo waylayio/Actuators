@@ -8,7 +8,7 @@
     "category": "Experimental",
     "description": "",
     "documentationURL": "http://docs.wunderbarregistration.apiary.io/#reference/device-commands-and-configurathion/device-commands/issues-a-command-for-a-device",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/relayr.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/relayr.png",
     "supportedStates": [],
     "requiredProperties": [
       "deviceId",

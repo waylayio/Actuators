@@ -7,7 +7,7 @@
     "author": "",
     "category": "Social",
     "description": "Send tweets. \nMessage is pre-processed using waylayUtil.evaluateData package.\n\nYou will need to get API keys by registering your app\n",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/tweet.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/tweet.png",
     "supportedStates": [],
     "requiredProperties": [
       "message"

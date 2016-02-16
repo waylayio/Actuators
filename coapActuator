@@ -7,7 +7,7 @@
     "author": "",
     "category": "CoAP",
     "description": "COAP actuator",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/coap.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/coap.png",
     "supportedStates": [],
     "requiredProperties": [
       "server",

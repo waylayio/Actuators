@@ -8,7 +8,7 @@
         "category": "Spark",
         "description": "Spark.io device function call\n\nInput parameters:\n<ul>\n<li>spark access token</li>\n<li>function that you want to call</li>\n<li>paramter to pass to the function</li>\n<li>deviceID</li>\n</ul>",
         "documentationURL": "https://www.spark.io/build/54381e2c688843ecad000826",
-        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/spark.png",
+        "iconURL": "https://static.waylay.io/plugs/icons/spark.png",
         "supportedStates": [],
         "requiredProperties": [
             "access_token",

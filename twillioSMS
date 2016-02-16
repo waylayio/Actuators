@@ -8,7 +8,7 @@
     "category": "Twilio",
     "description": "Twilio SMS\n\nYou need to get access keys from Twillio and provide them in global settings.\n\nInput parameters are:\n<ul>\n<li>to</li>\n<li>message</li>\n</ul>\n\nMessage will be parsed using waylayUtil.template function.\n",
     "documentationURL": "https://www.twilio.com/blog/2013/03/introducing-the-twilio-module-for-node-js.html",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/twillio.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/twillio.png",
     "supportedStates": [],
     "requiredProperties": [
       "message",

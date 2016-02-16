@@ -8,7 +8,7 @@
         "category": "Messaging",
         "description": "NEXMO SMS\n\nYou need to get access keys from NEXMO https://dashboard.nexmo.com/ and provide them in global settings.\n<br>\nInput parameters are:\n<ul>\n<li>from</li>\n<li>to</li>\n<li>message</li>\n</ul>\n<br>\nFrom, To, and Message properties will be parsed using waylayUtil.evaluateData function.",
         "documentationURL": "https://docs.nexmo.com/index.php/sms-api/send-message",
-        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/nexmo.png",
+        "iconURL": "https://static.waylay.io/plugs/icons/nexmo.png",
         "supportedStates": [],
         "requiredProperties": [
             "from",

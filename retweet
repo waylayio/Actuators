@@ -7,7 +7,7 @@
     "author": "",
     "category": "Social",
     "description": "retweet tweets. \nMessage is pre-processed using waylayUtil.evaluateData package.\n\nYou will need to get API keys by registering your app\n",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/retweets.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/retweets.png",
     "supportedStates": [],
     "requiredProperties": [
       "tweets"

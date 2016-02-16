@@ -7,7 +7,7 @@
         "author": "",
         "category": "MQTT",
         "description": "MQTT Publish actuator. It publishes a message to the waylay bridge \nusing MQTT protocol. \n\nInputs:\n<ul>\n<li>resource</li>\n<li>message in JSON format</li>\n</ul>\n\nFor more, check databridge documentation",
-        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/mqtt.png",
+        "iconURL": "https://static.waylay.io/plugs/icons/mqtt.png",
         "supportedStates": [],
         "requiredProperties": [
             "resource",

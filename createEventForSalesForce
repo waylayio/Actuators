@@ -7,7 +7,7 @@
     "author": "",
     "category": "SalesForce",
     "description": "Create event for the salesforce.\nSubject is mandatory, if duration is not given it default \nvalue is 1min.",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/salesforce.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/salesforce.png",
     "supportedStates": [],
     "requiredProperties": [
       "subject",

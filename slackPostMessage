@@ -8,7 +8,7 @@
     "category": "Slack",
     "description": "",
     "documentationURL": "https://api.slack.com/methods/chat.postMessage",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/slack.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/slack.png",
     "supportedStates": [],
     "requiredProperties": [
       "message",

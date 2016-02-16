@@ -8,7 +8,7 @@
     "category": "Experimental",
     "description": "",
     "documentationURL": "https://dev.netatmo.com/doc/methods/setthermpoint",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/netatmo-thermostat.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/netatmo-thermostat.png",
     "supportedStates": [],
     "requiredProperties": [
       "therm_id",

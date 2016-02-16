@@ -8,7 +8,7 @@
     "category": "Mail",
     "description": "SendGrid mail actuator.\nMessage and subject are parsed using waylayUtil.template function.\n\nInput parameters are:\n<ul>\n<li>from</li>\n<li>to</li>\n<li>message</li>\n<li>subject</li>\n</ul>\n\nActuator requires <strong>SENDGRID_KEY</strong> in the global settings\n",
     "documentationURL": "https://sendgrid.com/docs",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/sendgrid-128.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/sendgrid-128.png",
     "supportedStates": [],
     "requiredProperties": [
       "from",

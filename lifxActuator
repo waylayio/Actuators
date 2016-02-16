@@ -8,7 +8,7 @@
     "category": "Experimental",
     "description": "Lifx actuator\nyou can change the color, turn the lamp on or off, or change the brightness\n\nInput arguments are:\n<ul>\n<li>selector</li>\n<li>power : on or off</li>\n<li>color : you can also defined saturation level, like \"blue saturation:0.5\"</li>\n<li>brightness : number between 0 and 1</li>\n<li>duration : duration in seconds (in case that the power is on)</li>\n</ul>",
     "documentationURL": "http://api.developer.lifx.com/docs/set-state",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/lifx.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/lifx.png",
     "supportedStates": [],
     "requiredProperties": [
       "power",

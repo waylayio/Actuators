@@ -8,7 +8,7 @@
         "category": "Experimental",
         "description": "mongloLabStoreItem actuator stores in the mongolab \nunder database task_{TASK_ID} the following entries:\n\n<ul>\n<li>resource: resource</li>\n<li>node: node name</li>\n<li>node resource ID</li>\n<li>name: arbitary name (see properties below)</li>\n<li>time: time it was triggered, in UTC milis</li>\n</ul>\n\nProperties:\n<ul>\n<li>db: database name</li>\n<li>token: mongo token, unless defined in GLOBAL settings</li>\n<li>name: name of the actutator</li>\n</ul>",
         "documentationURL": "http://docs.mongolab.com/restapi/",
-        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/mongolab.png",
+        "iconURL": "https://static.waylay.io/plugs/icons/mongolab.png",
         "supportedStates": [],
         "requiredProperties": [
             "db",

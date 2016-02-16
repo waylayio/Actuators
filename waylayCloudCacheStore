@@ -8,7 +8,7 @@
         "category": "Waylay",
         "description": "waylayCloudCacheStore will store the payload in the the waylay cloud cache using the broker.\n\nActuator will post a payload using the resource as the identifier.\nInput parameters are:\n<ul>\n<li>domain (must be provided)</li>\n<li>resource, if not provided it will use as the resouece the node's resource name OR the resourrce of the task OR the name of the node</li>\n<li>payload (must be provided), which will be pre-processed with  waylayUtil.evaluateData or if not provided, will use the raw data of the item</li>\n</ul>\n\nNote that the broker <strong>will not only store the data, but will also forward (back) the resource and the payload as the stream data to the platform. </strong>\nThat way you can for instance use pull sensor to inject data to all other tasks via the stream data interface. \nFor more info, please check the documentation on the waylay broker and cloud cache.\n\n\n",
         "documentationURL": "",
-        "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/persisted_cache.png",
+        "iconURL": "https://static.waylay.io/plugs/icons/persisted_cache.png",
         "supportedStates": [],
         "requiredProperties": [
             "domain",
