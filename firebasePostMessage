@@ -1,0 +1,19 @@
+{
+  "name": "firebasePostMessage",
+  "version": "0.0.4",
+  "type": "actuator",
+  "script": "var payload = options.requiredProperties.payload;\nvar url = options.requiredProperties.URL || ' https://hackapost.firebaseio.com/lab.json';\n//var token = options.globalSettings.FIREBASE_TOKEN;\n\nvar requestOptions = {\n      url: url,\n      form: payload\n    };\n    request.put(requestOptions, function (error, response, body) {\n        try{\n            if (!error) {\n              send();\n            }else{\n             send(new Error(error));\n            }\n        } catch(err){\n            send(new Error(err));\n        }\n});",
+  "metadata": {
+    "author": "Veselin",
+    "category": "Firebase",
+    "description": "",
+    "documentationURL": "https://www.firebase.com/docs/web/api/",
+    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/firebase.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "payload",
+      "URL"
+    ],
+    "requiredRawData": []
+  }
+}
