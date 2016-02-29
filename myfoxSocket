@@ -1,0 +1,22 @@
+{
+  "name": "myfoxSocket",
+  "version": "0.0.10",
+  "type": "actuator",
+  "script": "var props = options.requiredProperties;\n\nvar clientId = options.globalSettings.DASHBOARD_KEY;\nvar clientSecret = options.globalSettings.DASHBOARD_SECRET;\nvar dashboardDomain = options.globalSettings.DASHBOARD_DOMAIN;\n\nvar tokenFromCache = waylayUtil.getCacheData(options, \"token\");\nvar power = props.power || \"on\";\nvar siteid = props.siteId;\nvar deviceid = props.deviceId;\nvar profile = props.profile || waylayUtil.getResource(options);\nvar json = {\n            power: power\n        };\nconsole.log(json);\n\nvar getToken = function(callback){\n  var options = {\n      url: \"https://\"+dashboardDomain+\"/api/token/myfox/\" + profile,\n       auth: {\n        user: clientId,\n        password: clientSecret\n      }\n  };\n  \n  try {\n      request(options, function(error, response, body) {\n      if (!error && response.statusCode == 200) {\n          var bodyJson = JSON.parse(body);\n          console.info(bodyJson);\n          callback(null, bodyJson);\n      }else{\n          callback(new Error(\"Calling myfox api failed: \" + error + \" \" + body + options.url));\n      }\n    });\n  } catch(err){\n       callback(new Error(\"Calling myfox api failed: \" + err));\n  }\n}\n\n\nvar setState = function(token) {\n    var url = \"https://api.myfox.me/v2/site/\" + siteid +\"/device/\" + deviceid + \"/socket/\" + power + \"?access_token=\" + token;\n    request.post(url, {\n    }, function(err, response, body) {\n       if (!err && response.statusCode == 200) {\n            console.log(body)\n            send();\n       } else{\n           console.log(response)\n           send(new Error(response.statusCode));\n       }\n    });\n};\n  \nvar setDeviceData = function(token){\n  console.log(token);\n  if(token.accessToken !== undefined){\n    setState(token.accessToken);\n  } else{\n    send(new Error(\"Token for profile \"+ profile + \" not valid\"));  \n    }\n}\n\nif(clientId !== undefined && clientSecret !== undefined && dashboardDomain !== undefined ){\n  getToken(function(err, token){\n    if(err){\n      //send(err);\n      //try with the old token\n      if(tokenFromCache !== undefined){\n          console.log(\"try with an old token, since the request to the dashboard failed\");\n          setDeviceData({accessToken: tokenFromCache});\n      }else {\n          console.log(err.stack)\n          send(new Error(err));\n      }\n    }else{\n      setDeviceData(token);\n    }\n  });\n}else{\n    send(new Error(\"Missing properties\"));\n}\n",
+  "metadata": {
+    "author": "",
+    "category": "Dashboard",
+    "description": "Myfox socket\nTurns a socket off and on.\n\nInput arguments are:\n<ul>\n<li>power : on or off</li>\n</ul>",
+    "documentationURL": "https://api.myfox.me/dev/documentation",
+    "iconURL": "https://static.waylay.io/plugs/icons/iot.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "power",
+      "siteId",
+      "deviceId",
+      "profile"
+    ],
+    "requiredRawData": []
+  }
+}
+
