@@ -8,7 +8,7 @@
     "category": "Dashboard",
     "description": "OSRAM actuator\nyou can change light properties\n\nInput arguments are:\n\n<ul>\n<li>profile: dashboard user email</li>\n<li>time: 0 - 2147483647, default 0, transition time in seconds? Does not seem to work</li>\n</ul>\n\nOnly fill one of the next\n<ul>\n<li>idx: lamp index (1, 2, ...)</li>\n<li>power: on/off</li>\n<li>hue: 0 - 360 (needs to be combined with saturation)</li>\n<li>saturation: 0.0 - 1.0 (needs to be combined with saturation)</li>\n<li>color: hex color, eg FF0000</li>\n<li>level: 0.0 - 1.0</li>\n<li>ctemp: 1000 - 8000, color temperature in K</li>\n</ul>",
     "documentationURL": "",
-    "iconURL": "https://dummyimage.com/160&text=osramActuator",
+    "iconURL": "http://media.rheinenergie-sparshop.de/media/catalog/product/cache/10/image/500x500/9df78eab33525d08d6e5fb8d27136e95/o/s/osram_logo_2_8.png",
     "supportedStates": [],
     "requiredProperties": [
       "idx",
