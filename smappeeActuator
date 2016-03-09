@@ -7,7 +7,7 @@
     "author": "Francis",
     "category": "Dashboard",
     "description": "<h1>Smappee actuator</h1>\n\nParameters\n<ul>\n<li>actuatorId: actuator id</li>\n<li>serviceLocationId: service location id</li>\n<li>action: 'on' or 'off'</li>\n<li>profile: dashboard login of user that has smappee connected</li>\n</ul>\n\nMore info at https://smappee.atlassian.net/wiki/display/DEVAPI/API+Methods",
-    "iconURL": "https://dummyimage.com/160&text=smappeeActuator",
+    "iconURL": "https://static.waylay.io/plugs/icons/smappee.png",
     "supportedStates": [],
     "requiredProperties": [
       "serviceLocationId",
