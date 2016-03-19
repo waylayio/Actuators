@@ -1,0 +1,21 @@
+{
+  "name": "waylayStoreMessage",
+  "version": "0.0.3",
+  "type": "actuator",
+  "script": "var resource  = options.requiredProperties.resource || waylayUtil.getResource(options);\nvar username =  options.globalSettings.API_KEY;\nvar password = options.globalSettings.API_PASS;\nvar domain =  options.globalSettings.waylay_domain || \"app.waylay.io\";\nvar message = options.requiredProperties.message;\nvar alertMessage = false;\nif(options.requiredProperties.alert){\n    if(options.requiredProperties.alert || options.requiredProperties.alert === \"true\" || options.requiredProperties.alert === \"on\")\n     alertMessage = false;\n}\n\nvar msg;\n\nvar storeMessage = function(msg){\n    console.log(\"storing message \" + JSON.stringify(msg));\n    var url = \"https://data.waylay.io/resources/\"+ resource +\"?domain=\"+domain;\n    var options = {\n        url: url,\n        json: msg,\n        auth: {\n            user: username,\n            pass: password,\n            sendImmediately: true\n        }\n    };\n    console.log(\"posting \"+ JSON.stringify(msg) + \", to \" + resource);\n    request.post(options, function(error, response, body) {\n        if (!error && response.statusCode == 200) {\n            console.log(\"message stored \" + JSON.stringify(msg));\n            send();\n        } else{\n            console.log(JSON.stringify(response));\n            send(new Error(error));\n        }\n    });\n}\n\nif(resource && message){\n     msg = waylayUtil.template(options, message); \n     var payload = {\n         message: msg,\n         alert: alertMessage\n     };\n     storeMessage(payload);\n     \n} else{\n    send(new Error(\"Missing properties\"));\n}\n\n\n\n",
+  "metadata": {
+    "author": "",
+    "category": "Waylay",
+    "description": "waylayStoreMessage will store the payload in the the waylay cloud cache using the broker.\n\nActuator will post a payload using the resource as the identifier.\nInput parameters are:\n<ul>\n<li>domain (must be provided)</li>\n<li>resource, if not provided it will use as the resouece the node's resource name OR the resourrce of the task OR the name of the node</li>\n<li>message (must be provided), which will be pre-processed with  waylayUtil.template</li>\n<li>alert, if provided, it will store a message as alert</li>\n</ul>\n",
+    "documentationURL": "",
+    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/persisted_cache.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "domain",
+      "resource",
+      "message",
+      "alert"
+    ],
+    "requiredRawData": []
+  }
+}
