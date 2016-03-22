@@ -1,19 +1,19 @@
 {
-    "name": "zendesk",
-    "version": "1.0.1",
-    "type": "actuator",
-    "script": "var username =  options.globalSettings.ZENDESK_USER;\nvar token = options.globalSettings.ZENDESK_KEY;\nvar subject = options.requiredProperties.subject;\nvar message = waylayUtil.evaluateData(options, options.requiredProperties.message);\nvar domain = options.globalSettings.ZENDESK_DOMAIN || \"waylayio\";\n\nconsole.log(message);\n\nif(username && token && subject && message){\n\n  var url = \"https://\"+ username + ':' + token +\"@\"+ domain+\".zendesk.com/api/v2/tickets.json\";\n  var data = {\n      \"ticket\" : {\n          \"requester\" : {\n              \"name\" : \"waylayPlatform\",\n          }, \"subject\" : subject,\n              \"comment\" : message\n      }\n  }\n  var options = {\n    url: url,\n    json: data\n  };\n\n  var callback = function(error, response, body) {\n    if (!error && (response.statusCode == 200 || response.statusCode == 201)) {\n      send();\n    }else{\n      console.log(response);\n      send(new Error(\"Calling zensdesk failed: \" + response));\n    }\n  };\n\n  request.post(options, callback);\n}else{\n  send(new Error(\"Missing properties\"));\n}\n\n\n",
-    "metadata": {
-        "author": "",
-        "category": "Enterprise",
-        "description": "Creates zendesk ticket.\nYou must obtain ZENDESK API keys first and put it in the global settings.\n\nInput parameters are:\n<ul>\n<li>message</li>\n<li>subject</li>\n</ul>\n\nMessage will be parsed using waylayUtil.evaluateData function.\n",
-        "documentationURL": "https://developer.zendesk.com/rest_api/docs/core/tickets",
-        "iconURL": "https://static.waylay.io/plugs/icons/zendesk.png",
-        "supportedStates": [],
-        "requiredProperties": [
-            "subject",
-            "message"
-        ],
-        "requiredRawData": []
-    }
+  "name": "zendesk",
+  "version": "1.0.2",
+  "type": "actuator",
+  "script": "var username =  options.globalSettings.ZENDESK_USER;\nvar token = options.globalSettings.ZENDESK_KEY;\nvar subject = options.requiredProperties.subject;\nvar message = waylayUtil.evaluateData(options, options.requiredProperties.message);\nvar domain = options.globalSettings.ZENDESK_DOMAIN || \"waylay\";\n\nconsole.log(message);\n\nif(username && token && subject && message){\n\n  var url = \"https://\"+domain+\".zendesk.com/api/v2/tickets.json\";\n  var data = {\n      \"ticket\" : {\n          \"requester\" : {\n              \"name\" : \"waylayPlatform\",\n          }, \"subject\" : subject,\n              \"comment\" : message\n      }\n  }\n  var options = {\n    url: url,\n    json: data,\n    auth:{\n        user: username+\"/token\",\n        pass: token\n    }\n  };\n\n  var callback = function(error, response, body) {\n    if (!error && (response.statusCode == 200 || response.statusCode == 201)) {\n      send();\n    }else{\n      console.log(response);\n      send(new Error(JSON.stringify(response)));\n    }\n  };\n\n  request.post(options, callback);\n}else{\n  send(new Error(\"Missing properties\"));\n}\n\n\n",
+  "metadata": {
+    "author": "",
+    "category": "Enterprise",
+    "description": "Creates zendesk ticket.\nYou must obtain ZENDESK API keys first and put it in the global settings.\n\nInput parameters are:\n<ul>\n<li>message</li>\n<li>subject</li>\n</ul>\n\nMessage will be parsed using waylayUtil.evaluateData function.\n",
+    "documentationURL": "https://developer.zendesk.com/rest_api/docs/core/tickets",
+    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/zendesk.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "subject",
+      "message"
+    ],
+    "requiredRawData": []
+  }
 }
