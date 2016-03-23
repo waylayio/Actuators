@@ -1,0 +1,19 @@
+{
+  "name": "infobipActuator",
+  "version": "0.0.1",
+  "type": "actuator",
+  "script": "var INFOBIP_API_KEY = options.globalSettings.INFOBIP_API_KEY;\nvar messageText = waylayUtil.template(options, options.requiredProperties.messageText);\nvar to =  waylayUtil.template(options, options.requiredProperties.to);\nvar from =  options.globalSettings.INFOBIP_SENDER;\n\nif(INFOBIP_API_KEY === undefined || messageText === undefined || to === undefined) {\n    send(new Error(\"INFOBIP_API_KEY, messageText and to must be defined!\"));\n} else {\n    var request = {\n        from: from,\n        to: to,\n        text: messageText\n    };\n    \n    unirest.post('https://api.infobip.com/sms/1/text')\n        .header('Authorization', 'App ' + INFOBIP_API_KEY)\n        .header('Content-Type', 'application/json')\n        .header('Accept', 'application/json')\n        .header('User-Agent', 'Waylay-Actuator-0.0.1')\n        .send(request)\n        .end(function (response) {\n            var errorMessage = null;\n            switch(response.code){\n                case 200: \n                    console.log(\"Message sent. Message ID: \" + response.body.messages[0].messageId);\n                    console.log(\"Number of sent messages: \" + response.body.messages[0].smsCount);\n                    send();\n                    break;\n                case 401:\n                    errorMessage = \"Unauthenticated.\";\n                    break;\n                case 500:\n                    errorMessage = \"Service error.\";\n                    break;\n                default:\n                    errorMessage = \"The service responded with code: \" + response.code;\n            }\n            if(errorMessage) {\n                console.log(errorMessage);\n                send(new Error(errorMessage));\n            }\n        });    \n}",
+  "metadata": {
+    "author": "",
+    "category": "SMS",
+    "description": "Infobip is an international IT and telecommunications company specialised in cloud-based mobile services for businesses, with its portfolio including professional SMS messaging solutions, push notifications and carrier billing. ",
+    "documentationURL": "http://www.infobip.com/en",
+    "iconURL": "https://static.waylay.io/plugs/icons/infobip.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "messageText",
+      "to"
+    ],
+    "requiredRawData": []
+  }
+}
