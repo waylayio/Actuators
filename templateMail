@@ -8,7 +8,7 @@
     "category": "Mail",
     "description": "Mail actuator.\nMessage and subject are parsed using waylayUtil.template function.\n\nInput parameters are:\n<ul>\n<li>from</li>\n<li>to</li>\n<li>reply</li>\n<li>message</li>\n<li>subject</li>\n</ul>\n\nActuator requires <strong>MANDRILL_KEY</strong> in the global settings\n",
     "documentationURL": "",
-    "iconURL": "https://members.marshallcenter.org/system/files/imagecache/resource_thumbnail/Mail.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/mail.png",
     "supportedStates": [],
     "requiredProperties": [
       "from",
