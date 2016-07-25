@@ -1,0 +1,21 @@
+{
+  "name": "setHarmonyActivity",
+  "version": "0.0.1",
+  "type": "actuator",
+  "script": "var props = options.requiredProperties;\nvar myHarmonyUrl = 'https://home.myharmony.com/cloudapi';\nvar dashboardDomain = options.globalSettings.DASHBOARD_DOMAIN;\nvar profile = props.profile || waylayUtil.getResource(options);\nvar clientId = options.globalSettings.DASHBOARD_KEY;\nvar clientSecret = options.globalSettings.DASHBOARD_SECRET;\n\nvar hubId = props.hubId;\nvar activityId = props.activityId;\nvar onState = props.activity === 'on';\nvar offState = props.activity === 'off';\n\nfunction requestP(options) {\n  var method = options.method || \"GET\";\n  console.log(method + ' -> ' + options.url);\n  return new Promise(function(resolve, reject){\n    var start = new Date().getTime();\n    console.log(method + '  ' + options.url);\n    request(options, function(err, response, body) {\n      var end = new Date().getTime();\n      var status = '-';\n      if(response) {\n        status = response.statusCode\n      }\n      if(err){\n        reject(err);\n      }else{\n        resolve({\n          response: response,\n          body: JSON.parse(body)\n        });\n      }\n    });\n  });\n}\n\nvar getToken = function() {\n    return new Promise(function(resolve, reject) {\n        var options = {\n            url: \"https://\"+dashboardDomain+\"/api/token/harmony/\" + profile,\n            auth: {\n                user: clientId,\n                password: clientSecret\n            }\n        };\n        try {\n            request(options, function(error, response, body) {\n                if (!error && response.statusCode == 200) {\n                    var bodyJson = JSON.parse(body);\n                    resolve(bodyJson);\n                } else {\n                    reject(new Error(\"Calling Harmony api failed: \" + error + \" \" + body + options.url));\n                }   \n            });\n        } catch(err){\n            reject(new Error(\"Calling Harmony api failed: \" + err));\n        }\n    });\n};\n\nfunction HarmonyClient(accessToken) {\n    function changeActivityState(hub, activity, newState) {\n        return requestP({\n            headers: {\n                Authorization: 'Bearer ' + accessToken\n            },\n            method: 'post',\n            url: myHarmonyUrl + '/hub/' + hub + '/activity/' + activity + '/' + newState\n        });\n    }\n    \n    this.startActivity = function(hub, activity) {\n        return changeActivityState(hub, activity, 'start');\n    };\n    \n    this.endActivity = function(hub, activity) {\n        return changeActivityState(hub, activity, 'end');\n    };\n}\n\nif(hubId && activityId && (onState || offState)) {\n  getToken()\n    .then(tokenResult => new HarmonyClient(tokenResult.accessToken))\n    .then(harmonyClient => {\n        if (onState)\n            return harmonyClient.startActivity(hubId, activityId);\n        return harmonyClient.endActivity(hubId, activityId);\n    })\n    .then(result => {\n        if (result.body.code == '200') {\n            console.log('Succesfully changed the state off an activity.');\n            return true;\n        } else {\n            console.log('Failed to set state: ' + result.body.msg + '(' + result.body.code + ')');\n            throw new Error(\"Error \" + result.body.code + \": \" + result.body.msg);\n        }\n    })\n    .then(result => {\n        send(null, {rawData : {'hubId': hubId, 'activityId': activityId, 'state': props.newState}});\n        return true;\n    })\n    .catch(err => {\n        console.error(err);\n        send(err);\n    })\n} else {\n  send(new Error('Missing properties'));\n}\n",
+  "metadata": {
+    "author": "",
+    "category": "Experimental",
+    "description": "Set harmony activity state\n\nWill change te state off an activity.\n\nRequires a hubId, activityId and a state\nState can be <code>on</code> or <code>off</code>.\nRequires a profile.",
+    "documentationURL": "https://developer.myharmony.com/#home/docs",
+    "iconURL": "https://dummyimage.com/160&text=setHarmonyActivityState",
+    "supportedStates": [],
+    "requiredProperties": [
+      "hubId",
+      "activityId",
+      "activity",
+      "profile"
+    ],
+    "requiredRawData": []
+  }
+}
