@@ -1,0 +1,19 @@
+{
+  "name": "waylayMaker",
+  "version": "0.0.5",
+  "script": "var props = options.requiredProperties;\nvar url = props.url;\nvar method = props.method;\nvar contentType = props.contentType || 'application/json';\nvar json = waylayUtil.template(options, props.json);\n\n\nif(url && json){\n    sendRequest().then(function (res) {\n        send();\n    }).catch(function (err) {\n        send(err);\n    })\n} else {\n    send(new Error(\"Missing properties\"));\n}\n\nfunction sendRequest() {\n    return requestP({\n        url: url,\n        method: method,\n        headers: {\n            'Content-Type': contentType\n        },\n        body: json\n    });\n}\n\nfunction requestP(options) {\n  var method = options.method || \"POST\";\n  console.log(method + ' -> ' + options.url);\n  return new Promise(function(resolve, reject){\n    var start = new Date().getTime();\n    console.log(method + '  ' + options.url);\n    request(options, function(err, response, body) {\n      var end = new Date().getTime();\n      var status = '-';\n      if(response) {\n        status = response.statusCode\n      }\n      if(err){\n        reject(err);\n      }else{\n        resolve({\n          response: response,\n          body: body\n        });\n      }\n    });\n  });\n}",
+  "metadata": {
+    "author": "Glenn",
+    "category": "Waylay",
+    "description": "An actuator to POST/PUT to any url you configure.\n\nYou also have to set the content-type the webservice expects.\nYou can then pass the json you want to send.",
+    "iconURL": "https://static.waylay.io/plugs/icons/json2.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "url",
+      "method",
+      "contentType",
+      "json"
+    ],
+    "requiredRawData": []
+  }
+}
