@@ -1,18 +1,18 @@
 {
-    "name": "controlTask",
-    "version": "1.0.1",
-    "type": "actuator",
-    "script": "var taskID = options.requiredProperties.taskId || options.task.TASK_ID;\nvar command = options.requiredProperties.command;\nvar username =  options.globalSettings.API_KEY;\nvar password = options.globalSettings.API_PASS;\n\nrequest.post(\n    'https://'+ username + ':' + password +'@app.waylay.io/api/tasks/'+taskID+'/command/'+command,\n    function (error, response, body) {\n        if (!error && response.statusCode == 200) {\n            send();\n        } else\n            send(new Error(\"Error executing the control action\"));\n    }\n);\n",
-    "metadata": {
-        "author": "",
-        "category": "Experimental",
-        "description": "Control task actuator.\nInput parametets are:\n<ul>\n<li>command: can be either start or stop</li>\n<li>taskID: if not provided it will control the current task</li>\n</ul>\n",
-        "iconURL": "https://static.waylay.io/plugs/icons/switch.png",
-        "supportedStates": [],
-        "requiredProperties": [
-            "command",
-            "taskId"
-        ],
-        "requiredRawData": []
-    }
+  "name": "controlTask",
+  "version": "1.0.2",
+  "type": "actuator",
+  "script": "var taskId = options.requiredProperties.taskId || options.task.TASK_ID;\n//should be start, stop ...\nvar command = options.requiredProperties.command \nvar username =  options.globalSettings.API_KEY\nvar password = options.globalSettings.API_PASS\nvar domain = options.requiredProperties.waylay_domain\n\nvar ops = {\n    url: 'https://' + domain +'/api/tasks/'+taskId+'/command/'+command,\n    auth: {\n        user: username,\n        pass: password,\n        sendImmediately: true\n    }\n}\nrequest.post(\n    ops,\n    function (error, response, body) {\n        if (!error && response.statusCode == 200) {\n            send();\n        } else\n            send(new Error(body));\n    }\n);\n",
+  "metadata": {
+    "author": "",
+    "category": "Experimental",
+    "description": "Control task actuator.\nInput parametets are:\n<ul>\n<li>command: can be either start or stop</li>\n<li>taskID: if not provided it will control the current task</li>\n</ul>\n",
+    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/switch.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "command",
+      "taskId"
+    ],
+    "requiredRawData": []
+  }
 }
