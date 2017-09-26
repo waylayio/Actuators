@@ -8,7 +8,7 @@
     "category": "Waylay",
     "description": "Uses waylay alarms interface to store alarms.\n\n",
     "documentationURL": "",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/alarm.png",
+    "iconURL": "https://s3.eu-central-1.amazonaws.com/static.waylay.io/plugs/icons/alarm.png",
     "supportedStates": [],
     "requiredProperties": [
       "resource",
