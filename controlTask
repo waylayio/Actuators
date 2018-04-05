@@ -7,7 +7,7 @@
     "author": "",
     "category": "Experimental",
     "description": "Control task actuator.\nInput parametets are:\n<ul>\n<li>command: can be either start or stop</li>\n<li>taskID: if not provided it will control the current task</li>\n</ul>\n",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/switch.png",
+    "iconURL": "https://static.waylay.io/icons/switch.png",
     "supportedStates": [],
     "requiredProperties": [
       "command",
