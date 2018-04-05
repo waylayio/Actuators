@@ -8,7 +8,7 @@
     "category": "Messaging",
     "description": "Pushover actuator",
     "documentationURL": "https://pushover.net/api#messages",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/pushover.png",
+    "iconURL": "https://static.waylay.io/icons/pushover.png",
     "supportedStates": [],
     "requiredProperties": [
       "message",
