@@ -8,7 +8,7 @@
     "category": "Experimental",
     "description": "mongloLabStoreItem actuator stores data in the mongolab with the following entries:\n\n<ul>\n<li>payload: if defined, the db entry will be extened with this payload</li>\n<li>resource: resource</li>\n<li>node: node name</li>\n<li>TASK_ID: task ID</li>\n<li>time: time it was triggered, in UTC milis</li>\n</ul>\n\nProperties:\n<ul>\n<li>db: database name</li>\n<li>collection</li>\n<li>token: mongo token, unless defined in GLOBAL settings</li>\n<li>payload: if defined, the db entry will be extened with payload</li>\n</ul>",
     "documentationURL": "http://docs.mongolab.com/restapi/",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/mongolab.png",
+    "iconURL": "https://static.waylay.io/icons/mongolab.png",
     "supportedStates": [],
     "requiredProperties": [
       "db",
