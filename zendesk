@@ -8,7 +8,7 @@
     "category": "Enterprise",
     "description": "Creates zendesk ticket.\nYou must obtain ZENDESK API keys first and put it in the global settings.\n\nInput parameters are:\n<ul>\n<li>message</li>\n<li>subject</li>\n</ul>\n\nMessage will be parsed using waylayUtil.evaluateData function.\n",
     "documentationURL": "https://developer.zendesk.com/rest_api/docs/core/tickets",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/zendesk.png",
+    "iconURL": "https://static.waylay.io/icons/zendesk.png",
     "supportedStates": [],
     "requiredProperties": [
       "subject",
