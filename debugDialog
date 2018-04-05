@@ -7,7 +7,7 @@
     "author": "",
     "category": "Debug",
     "description": "Debug dialog actuator, to be used while debuging new templates.\nMessage will pop up in the debug window. Message is processed using \nwaylayUtil.evaluateData package.",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/bubble.png",
+    "iconURL": "https://static.waylay.io/icons/bubble.png",
     "supportedStates": [],
     "requiredProperties": [
       "message"
