@@ -1,12 +1,12 @@
 {
   "name": "compositeActuator",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "type": "actuator",
-  "script": "var values = waylayUtil.getProperty(options, \"values\")\nvar actuator = waylayUtil.getProperty(options, \"actuator\")\nvar username =  options.globalSettings.API_KEY\nvar password = options.globalSettings.API_PASS\nvar domain = options.requiredProperties.domain || options.globalSettings.waylay_domain ||\"app.waylay.io\"\nvar url = \"https://\" + domain + \"/api/actions/\" + actuator\n\nvar actuator = function(properties) {\n    console.log(\"properties\", properties)\n    return requestP.post({\"uri\": url, json: properties, auth: {user: username,password: password}})\n}\n\nvar actuations = []\n_.map(values, value => {\n    console.log(\"value\", value)\n    value = _.mapValues(value, v => { \n        if(_.isString(v) && v.indexOf(\"{{\") > -1)\n            return waylayUtil.template(options, v)\n        else\n            return v\n    })\n    actuations.push(actuator({properties: value}))\n})\n\nPromise.all(actuations)\n.then((args) => {console.log(args);send()})\n.catch(err => send(new Error(err)))",
+  "script": "var values = waylayUtil.getProperty(options, \"values\")\nvar actuator = waylayUtil.getProperty(options, \"actuator\")\n\nvar actuatorP = function(properties) {\n   console.log(\"properties\", properties)\n   return waylay.actuators.execute(actuator, 'latest', {properties})\n}\n\nvar actuations = []\n_.map(values, value => {\n    console.log(\"value\", value)\n    value = _.mapValues(value, v => { \n        if(_.isString(v) && v.indexOf(\"{{\") > -1)\n            return waylayUtil.template(options, v)\n        else\n            return v\n    })\n    actuations.push(actuatorP(value))\n})\n\nPromise.all(actuations)\n.then((response) => {console.log(response);send()})\n.catch(err => send(new Error(err)))",
   "metadata": {
     "author": "",
     "category": "Waylay",
-    "description": "Composite actuator, it will send as many actions \nas there are objects in the values list.\nValues are list of arguments required by the actuator.\nFor instance <pre>\n[{ \n \"from\": \"foo@bar\",\n \"to\" : \"hello@world\",\n \"message\" : \"hi\",\n  \"subject\" : \"test\"\n  },\n  { \n \"from\": \"foo@bar\",\n \"to\" : \"hello@world\",\n \"message\" : \"hi\",\n  \"subject\" : \"test\"\n  }]\n  </pre>\nfor the actuator templateMail will send 2 mails with inputs as \ndefined in the array\n",
+    "description": "Composite actuator, it will send as many actions \nas there are objects in the values list.\nValues are list of arguments required by the actuator.\nAs from version 1.0.0. it uses waylay nmp package (sandbox 0.14.0)\n\nFor instance <pre>\n[{ \n \"from\": \"foo@bar\",\n \"to\" : \"hello@world\",\n \"message\" : \"hi\",\n  \"subject\" : \"test\"\n  },\n  { \n \"from\": \"foo@bar\",\n \"to\" : \"hello@world\",\n \"message\" : \"hi\",\n  \"subject\" : \"test\"\n  }]\n  </pre>\nfor the actuator templateMail will send 2 mails with inputs as \ndefined in the array\n",
     "iconURL": "https://static.waylay.io/plugs/icons/box_out.png",
     "supportedStates": [],
     "requiredProperties": [
