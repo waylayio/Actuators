@@ -1,0 +1,18 @@
+{
+  "name": "nestSetTargetTemperature",
+  "version": "0.0.1",
+  "type": "actuator",
+  "script": "\nconst temperature = waylayUtil.getProperty(options, \"temperature\") || 20\nconst apiRoot = \"https://developer-api.nest.com\"\nconst deviceId = waylayUtil.getProperty(options, \"deviceId\")\nvar user = waylayUtil.getProperty(options, \"user\") || \"organisation\"\n\nvar auth\n\nfunction setTemperature(redirectUri) {\n     return requestP({\n        url: (redirectUri) ? redirectUri : apiRoot + '/devices/thermostats/' + deviceId,\n        method: 'PUT',\n        auth: auth,\n        'Content-Type': 'application/json',\n        json: {\n        \t\"target_temperature_c\" : parseInt(temperature)\n        }\n    });\n}\n\nwaylayUtil.getAuthTokens(options, user, \"nest\")\n.then(token => {\n     auth = {'bearer': token.accessToken}\n     setTemperature()\n    .catch(err =>{\n        if(err.redirectUri){\n            console.log(\"retrying with redirectUri\")\n            setTemperature(err.redirectUri)\n        }\n        else {\n            throw new Error('Problem setting temperature for Nest.')\n        }\n    })\n})\n.then(send)\n.catch(err =>{\n    send(new Error(err))\n})",
+  "metadata": {
+    "author": "Lorenzo",
+    "category": "Nest",
+    "description": "NEST actuator\nsets the thermostat to the target temperature\n",
+    "iconURL": "https://static.waylay.io/plugs/icons/nest.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "deviceId",
+      "temperature"
+    ],
+    "requiredRawData": []
+  }
+}
