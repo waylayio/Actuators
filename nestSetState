@@ -1,0 +1,19 @@
+{
+  "name": "nestSetState",
+  "version": "0.0.1",
+  "type": "actuator",
+  "script": "\nvar newState = waylayUtil.getProperty(options, \"state\") || \"away\"\nconst apiRoot = \"https://developer-api.nest.com\"\nconst deviceId = waylayUtil.getProperty(options, \"deviceId\")\nvar user = waylayUtil.getProperty(options, \"user\") || \"organisation\"\n\nvar auth\n\nfunction setState(redirectUri) {\n     return requestP({\n        url: (redirectUri) ? redirectUri : apiRoot + '/structures/' + deviceId,\n        method: 'PUT',\n        auth: auth,\n        'Content-Type': 'application/json',\n        json: {\n        \t\"away\" : newState\n        }\n    })\n}\n\nwaylayUtil.getAuthTokens(options, user, \"nest\")\n.then(token => {\n     auth = {'bearer': token.accessToken}\n     setState()\n    .catch(err =>{\n        if(err.redirectUri){\n            console.log(\"retrying with redirectUri\")\n            setState(err.redirectUri)\n        }\n        else {\n            throw new Error('Problem setting temperature for Nest.')\n        }\n    })\n})\n.then(send)\n.catch(err =>{\n    send(new Error(err))\n})\n",
+  "metadata": {
+    "author": "Lorenzo",
+    "category": "Nest",
+    "description": "Change state of the NEST structure\nIf state not provided, it will by default set it to away\n",
+    "iconURL": "https://static.waylay.io/plugs/icons/nest.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "profile",
+      "deviceId",
+      "state"
+    ],
+    "requiredRawData": []
+  }
+}
