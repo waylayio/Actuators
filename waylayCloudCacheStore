@@ -8,7 +8,7 @@
     "category": "Waylay",
     "description": "waylayCloudCacheStore will store the payload in the the waylay.\nAs from version 2.0.0. it uses waylay nmp package (sandbox 0.14.0)\n\nActuator will post a payload using the resource as the identifier.\nInput parameters are:\n<ul>\n<li>resource, if not provided it will use the waylayUtil.getResource call</li>\n<li>payload, which will be pre-processed with  waylayUtil.template or if not provided, will use the raw data of the sensor node</li>\n<li>forward (should the message be forward or only stored, default is false</li>\n<li>store (should the message be stored, default is true</li>\n</ul>\n\nNote that the broker <strong>will not only store the data, but will also forward (back) the resource and the payload as the stream data to the platform. </strong>\nThat way you can for instance use pull sensor to inject data to all other tasks via the stream data interface. \nFor more info, please check the documentation on the waylay broker and cloud cache.\n\n\n",
     "documentationURL": "",
-    "iconURL": "https://raw.githubusercontent.com/waylayio/documentation/master/icons/persisted_cache.png",
+    "iconURL": "https://static.waylay.io/icons/persisted_cache.png",
     "supportedStates": [],
     "requiredProperties": [
       "resource",
