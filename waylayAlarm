@@ -1,8 +1,8 @@
 {
   "name": "waylayAlarm",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "type": "actuator",
-  "script": "var severity = options.requiredProperties.severity || \"CRITICAL\"\nvar type = options.requiredProperties.type \nvar resource = waylayUtil.getProperty(options, \"resource\") || waylayUtil.getResource(options)\nvar text = waylayUtil.template(options, options.requiredProperties.text)\n\nvar alarm = {\n    severity: severity,\n    type: type,\n    text: text,\n    source: {id: resource},\n    timestamp: moment().unix()\n}\n\nconsole.log(\"alarm\", alarm)\n\nif(resource === undefined){\n    send(new Error(\"resource not defined\"))\n} else {\n     waylay.alarms.create(alarm).then(response=>{\n        console.log(response)\n        send()\n    }).catch(function(err){\n        console.log(err)\n        send(new Error(\"Storing alarm failed: \" + err))\n    });\n}\n\n\n\n\n",
+  "script": "var severity = waylayUtil.getProperty(options, \"severity\") || \"CRITICAL\"\nvar type = options.requiredProperties.type \nvar resource = waylayUtil.getProperty(options, \"resource\") || waylayUtil.getResource(options)\nvar text = waylayUtil.template(options, options.requiredProperties.text)\n\nvar alarm = {\n    severity: severity,\n    type: type,\n    text: text,\n    source: {id: resource},\n    timestamp: moment().unix() * 1000\n}\n\nconsole.log(\"alarm\", alarm)\n\nif(resource === undefined){\n    send(new Error(\"resource not defined\"))\n} else {\n     waylay.alarms.create(alarm).then(response=>{\n        console.log(response)\n        send()\n    }).catch(function(err){\n        console.log(err)\n        send(new Error(\"Storing alarm failed: \" + err))\n    });\n}\n\n",
   "metadata": {
     "author": "",
     "category": "Waylay",

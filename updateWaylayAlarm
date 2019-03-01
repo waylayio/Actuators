@@ -1,0 +1,19 @@
+{
+  "name": "updateWaylayAlarm",
+  "version": "0.0.3",
+  "type": "actuator",
+  "script": "var alarmId = waylayUtil.getProperty(options, \"alarmId\") || undefined\nvar severity = waylayUtil.getProperty(options, \"severity\") || undefined\nvar status = waylayUtil.getProperty(options, \"status\") || undefined\n\nconsole.debug(\"alarm\", alarmId)\nconsole.debug(\"severity '\" + severity + \"'\")\nconsole.debug(\"status '\" + status + \"'\")\n\nif(alarmId === undefined){\n    send(new Error(\"alarmId not defined\"))\n} else {\n    waylay.alarms.update(alarmId, {severity, status}).then(response=>{\n        console.log(response)\n        send()\n    }).catch(function(err){\n        if (err.response) {\n           console.log(err.response.data)\n        }\n        send(new Error(\"Updating alarm failed: \" + err))\n    });\n}\n\n\n\n",
+  "metadata": {
+    "author": "",
+    "category": "Waylay",
+    "description": "Update status and/or severity of an alarm.\n\n<p>\nProperties:\n<ul>\n<li>alarmId (mandatory): id of the alarm to update</li>\n<li>status (optional): ACTIVE or ACKNOWEDGED</li>\n<li>severity (optional): WARNING, MINOR, MAJOR or CRITICAL</li>\n</ul>\n</p>",
+    "iconURL": "https://static.waylay.io/plugs/icons/updateAlarm.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "alarmId",
+      "status",
+      "severity"
+    ],
+    "requiredRawData": []
+  }
+}
