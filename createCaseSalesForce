@@ -6,7 +6,7 @@
   "metadata": {
     "author": "",
     "category": "SalesForce",
-    "description": "Add case in SalesForce, all fields are optional.\nIf accountId is not provided, it will be using the account\nof the person to who belongs the API token.\nIf AssetId it will take waylay resource as AssetId.",
+    "description": "Add case in SalesForce, all fields are optional.\nIf accountId is not provided, it will be using the account\nof the person to who belongs the API token.\nIf AssetId is not provided it will take waylay resource as AssetId.",
     "iconURL": "https://static.waylay.io/plugs/icons/salesforce-add-feed-item.png",
     "supportedStates": [],
     "requiredProperties": [
