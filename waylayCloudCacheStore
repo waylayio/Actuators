@@ -1,6 +1,6 @@
 {
   "name": "waylayCloudCacheStore",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "type": "actuator",
   "script": "var { forward, store } = options.requiredProperties\nvar resource = waylayUtil.getProperty(options, \"resource\") || waylayUtil.getResource(options)\nvar payload = waylayUtil.getProperty(options, \"payload\")\nwaylay.data.baseUrl =   options.globalSettings.waylay_data ||  \"https://data.waylay.io\"\n\nif(payload === undefined || payload === \"\")\n    payload = waylayUtil.getRawData(options, options.node.NAME)\n\nif(resource === '$' || resource === undefined)\n  resource = options.node.NAME\n\nif(forward !== undefined && (forward === \"true\" || forward === \"TRUE\" || forward === \"True\"))\n    forward = true\nelse\n    forward = false\n\nif(store !== undefined && (store === \"false\" || store === \"FALSE\" || store === \"False\"))\n    store = false\nelse\n    store = true\n\nqs = { forward: forward, store: store }\n\nconsole.log(\"resource\", resource)\nif(resource === undefined || resource === \"\" || payload === undefined) {\n    send(new Error(\"resource or payload not defined\"))\n} \nelse {\n    if(!_.isString(payload)) {\n        payload = JSON.stringify(payload)             \n    }\n    payload = JSON.parse(waylayUtil.template(options, payload))\n        \n    if(Array.isArray(payload)){\n        payload = _.map(payload, m =>{\n            if(m.resource === undefined) {\n                return Object.assign(m, { resource } )   \n                } else {\n                    return m\n                }\n        })\n    } else {\n        payload.resource = resource\n    }\n    console.log(\"storing \"+ JSON.stringify(payload) + \", to \" + resource)\n    waylay.data.postSeries(payload, qs)\n    .then(response=> {\n        console.log(\"message stored\")\n        send()\n        } \n    ).catch(err =>{\n      send(new Error(err))  \n    })\n}\n\n\n\n\n\n\n",
   "metadata": {
@@ -8,7 +8,7 @@
     "category": "Waylay",
     "description": "waylayCloudCacheStore will store the payload in the the waylay.\nAs from version 2.0.0. it uses waylay nmp package (sandbox 0.14.0)\n\nActuator will post a payload using the resource as the identifier.\nInput parameters are:\n<ul>\n<li>resource, if not provided it will use the waylayUtil.getResource call</li>\n<li>payload, which will be pre-processed with  waylayUtil.template or if not provided, will use the raw data of the sensor node</li>\n<li>forward (should the message be forward or only stored, default is false</li>\n<li>store (should the message be stored, default is true</li>\n</ul>\n\nNote that the broker <strong>will not only store the data, but will also forward (back) the resource and the payload as the stream data to the platform. </strong>\nThat way you can for instance use pull sensor to inject data to all other tasks via the stream data interface. \nFor more info, please check the documentation on the waylay broker and cloud cache.\n\n\n",
     "documentationURL": "",
-    "iconURL": "https://static.waylay.io/icons/persisted_cache.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/persisted_cache.png",
     "supportedStates": [],
     "requiredProperties": [
       "resource",
