@@ -1,13 +1,13 @@
 {
   "name": "createEventForSalesForce",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "type": "actuator",
   "script": "var user = options.globalSettings.salesForceUser;\nvar token = options.globalSettings.salesForceToken;\nvar subject = waylayUtil.template(options, options.requiredProperties.subject)\nvar lc = waylayUtil.getProperty(options, \"location\") || ''\nvar minutes = waylayUtil.getProperty(options, \"duration\") || 1\n\n\nif(user === undefined || token === undefined || subject === undefined) {\n    send(new Error(\"token or user not defined\"));\n}\nelse {\n    try{\n        var conn = new jsforce.Connection();\n        conn.login(user, token, function(err, res){\n            if (err) { \n              console.error(err); \n              send(new Error(err));\n            } else{\n                 conn.sobject(\"Event\").create({ \n                      Subject : subject,\n                      Location: lc,\n                      ActivityDateTime: moment().toISOString(),\n                      DurationInMinutes : minutes\n                  }, function(err, ret) {\n                    if (err) { \n                       console.error(err); \n                       send(new Error(err));\n                    } else {\n                        send(null, { message: JSON.stringify(ret)});\n                        send(null)\n                    }\n                  });\n            }\n        });\n    }\n    catch(err){\n        console.error(err); \n        send(new Error(err));\n    }\n}\n",
   "metadata": {
     "author": "",
     "category": "SalesForce",
     "description": "Create event for the salesforce.\nSubject is mandatory, if duration is not given it default \nvalue is 1min.",
-    "iconURL": "https://static.waylay.io/icons/salesforce.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/create-event-for-salesforce.png",
     "supportedStates": [],
     "requiredProperties": [
       "subject",
