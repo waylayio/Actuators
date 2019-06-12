@@ -1,0 +1,17 @@
+{
+  "name": "speechMessage",
+  "version": "0.0.2",
+  "type": "actuator",
+  "script": "var parsedMessage =  \"ALERT\";\nif(options.requiredProperties.message)\n    parsedMessage = waylayUtil.template(options, options.requiredProperties.message);\nif(typeof parsedMessage != 'string'){\n   parsedMessage = JSON.stringify(parsedMessage);\n}\nsend(null, {message: parsedMessage});\n",
+  "metadata": {
+    "author": "",
+    "category": "Debug",
+    "description": "Speech dialog actuator (web browser), to be used while debuging new templates.\nMessage is processed using waylayUtil.template package.",
+    "iconURL": "https://static.waylay.io/icons/mic.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "message"
+    ],
+    "requiredRawData": []
+  }
+}
