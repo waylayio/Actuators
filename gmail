@@ -1,6 +1,6 @@
 {
   "name": "gmail",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "type": "actuator",
   "script": "const BuildMail = require('buildmail')\nconst { google } = require('googleapis')\n\nvar hoardUrl = options.globalSettings.hoardUrl\nconst props = options.requiredProperties\nconst clientId = options.globalSettings.DASHBOARD_KEY\nconst clientSecret = options.globalSettings.DASHBOARD_SECRET\nconst dashboardDomain = options.globalSettings.DASHBOARD_DOMAIN\n\nconst profile = waylayUtil.getProperty(options, \"user\") || \"organisation\"\nconst message = waylayUtil.template(options, options.requiredProperties.message)\nconst subject = props.subject\nconst to = props.to\nconst providerName = 'gmail'\n\nif(profile !== undefined && message !== undefined  && subject !== undefined  && to !== undefined) {\n    getToken()\n        .then(accessToken => {\n            if (!accessToken) return Promise.reject(`No token for ${profile}`)\n\n            return createEmail()\n              .then(email => sendMail(accessToken, email))\n              .then(email => send())\n        })\n        .catch(err => {\n            send(new Error(`Failed to actuate on ${JSON.stringify(err)}`))\n        })\n} else {\n    send(new Error(\"Missing properties\"))\n}\n\nfunction getToken () {\n    return waylayUtil.getAuthTokens({ ...options, hoardUrl }, profile, \"gmail\")\n        .then(token => token.access_token)\n}\n\nfunction getAPIClient (accessToken) {\n    const OAuth2 = google.auth.OAuth2\n    \n    const oauth2Client = new OAuth2()\n    oauth2Client.setCredentials({\n        access_token: accessToken,\n        refresh_token: ''\n    })\n\n    return google.gmail({\n        version: 'v1',\n        auth: oauth2Client\n    })\n}\n\nfunction createEmail () {\n    return new Promise((resolve, reject) => {\n        new BuildMail('text/plain')\n            .setContent(message)\n            .setHeader('subject', subject)\n            .addHeader({ to: to })\n            .build((err, mail) => {\n                return err ? reject(err) : resolve(Buffer.from(mail.toString('ascii')).toString('base64'))\n            })\n    })\n}\n\nfunction sendMail (token, email) {\n    const client = getAPIClient(token)\n\n    return new Promise((resolve, reject) => {\n        client.users.messages.send({\n            userId: 'me',\n            resource: {\n              raw: email\n            }\n        }, (err, result) => {\n            return err ? reject(err) : resolve(result)\n        })\n    })\n}",
   "metadata": {
@@ -15,5 +15,9 @@
       "to"
     ],
     "requiredRawData": []
+  },
+  "dependencies": {
+    "buildmail": "4.0.1",
+    "googleapis": "27"
   }
 }
