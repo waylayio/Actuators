@@ -1,16 +1,20 @@
 {
   "name": "FTP",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "actuator",
-  "script": "var host = waylayUtil.getProperty(options, \"server\") || \"ftp.funet.fi\"\nvar file = waylayUtil.getProperty(options, \"file\") || \"/pub/standards/RFC/rfc959.txt\"\n\nvar connectionProperties = {\n    host: host\n};\n\nvar write = concat(function(data) {\n  //console.log(data.toString());\n  send(null, {observedState : \"Collected\", rawData : { document: data.toString()}})\n})\n\n\ntry{\n  var c = new FTPClient();\n    c.on('ready', function() {\n      c.get(file, function(err, stream) {\n        if (err) throw err;\n        stream.once('close', function() {\n          write.end()\n          c.end();\n        });\n        stream.pipe(write);\n      });\n    });\n    c.connect(connectionProperties); \n} catch (err){\n    send(null, {observedState : \"Error\"})\n}\n",
+  "script": "var pwd = waylayUtil.getProperty(options, 'pwd')  || options.globalSettings.FTP_PWD\nvar user = waylayUtil.getProperty(options, 'user')  || options.globalSettings.FTP_USR\nvar host = waylayUtil.getProperty(options, 'server') || options.globalSettings.FTP_SERVER \n\nvar resource = waylayUtil.getResource(options) || 'Waylay'\n\nvar fileName = waylayUtil.getProperty(options, 'fileName') || resource + ' ' + moment().toISOString() + '.csv'\nvar data = waylayUtil.getProperty(options, 'data') || 'foo bar text'\nconsole.log('save data', data)\n\n\nvar connectionProperties = {\n    host: host,\n    user: user,\n    password: pwd\n}\n\n\nvar c = new FTPClient()  \nvar buffer = new Buffer(data)  \nconsole.log('ftp data', data)\n\ntry {\n  c.connect(connectionProperties)   \n  c.on('ready', function() {\n    c.put(buffer, fileName,  function(err) {\n      if (err) throw err\n      c.end()\n      send()\n    })\n  })  } \ncatch (err){   \n  send(new Error(err))  \n}\n",
   "metadata": {
     "author": "Veselin",
     "category": "General",
-    "description": "FTP Actuator um Daten aus Waylay auf einen FTP zu schieben",
-    "iconURL": "https://dummyimage.waylay.io/160&text=FTP",
+    "description": "FTP Actuator",
+    "iconURL": "https://static.waylay.io/plugs/icons/ftp.png",
     "supportedStates": [],
     "requiredProperties": [
-      "testProperty1"
+      "server",
+      "user",
+      "pwd",
+      "fileName",
+      "data"
     ],
     "requiredRawData": []
   }
