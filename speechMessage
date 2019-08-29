@@ -7,7 +7,7 @@
     "author": "",
     "category": "Debug",
     "description": "Speech dialog actuator (web browser), to be used while debuging new templates.\nMessage is processed using waylayUtil.template package.",
-    "iconURL": "https://static.waylay.io/icons/mic.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/mic.png",
     "supportedStates": [],
     "requiredProperties": [
       "message"

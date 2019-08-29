@@ -8,7 +8,7 @@
     "category": "Firebase",
     "description": "",
     "documentationURL": "https://www.firebase.com/docs/web/api/",
-    "iconURL": "https://static.waylay.io/icons/firebase.png",
+    "iconURL": "https://static.waylay.io/plugs/icons/firebase.png",
     "supportedStates": [],
     "requiredProperties": [
       "payload",
