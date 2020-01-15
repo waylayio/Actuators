@@ -1,8 +1,8 @@
 {
   "name": "updateWaylayAlarm",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "actuator",
-  "script": "var alarmId = waylayUtil.getProperty(options, \"alarmId\") || undefined\nvar severity = waylayUtil.getProperty(options, \"severity\") || undefined\nvar status = waylayUtil.getProperty(options, \"status\") || undefined\n\nconsole.debug(\"alarm\", alarmId)\nconsole.debug(\"severity '\" + severity + \"'\")\nconsole.debug(\"status '\" + status + \"'\")\n\nif(alarmId === undefined){\n    send(new Error(\"alarmId not defined\"))\n} else {\n    waylay.alarms.update(alarmId, {severity, status}).then(response=>{\n        console.log(response)\n        send()\n    }).catch(function(err){\n        if (err.response) {\n           console.log(err.response.data)\n        }\n        send(new Error(\"Updating alarm failed: \" + err))\n    });\n}\n\n\n\n",
+  "script": "var alarmId = waylayUtil.getProperty(options, \"alarmId\") || undefined\nvar severity = waylayUtil.getProperty(options, \"severity\") || undefined\nvar status = waylayUtil.getProperty(options, \"status\") || undefined\nwaylay.alarms.baseUrl = options.globalSettings.waylay_alarms || \"https://alarms.waylay.io\"\n\nconsole.debug(\"alarm\", alarmId)\nconsole.debug(\"severity '\" + severity + \"'\")\nconsole.debug(\"status '\" + status + \"'\")\n\nif(alarmId === undefined){\n    send(new Error(\"alarmId not defined\"))\n} else {\n    waylay.alarms.update(alarmId, {severity, status}).then(response=>{\n        console.log(response)\n        send()\n    }).catch(function(err){\n        if (err.response) {\n           console.log(err.response.data)\n        }\n        send(new Error(\"Updating alarm failed: \" + err))\n    });\n}\n\n\n\n",
   "metadata": {
     "author": "",
     "category": "Waylay",
