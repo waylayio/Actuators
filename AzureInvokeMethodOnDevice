@@ -1,10 +1,10 @@
 {
   "name": "AzureInvokeMethodOnDevice",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "type": "actuator",
   "script": "const Client = require('azure-iothub').Client\n/**\n * More documentation on sending data to an Azure connected device can be found here:\n * https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-control-device-node\n */\nconst main = () => {\n    const AZURE_CONNECTION_STRING = options.globalSettings.AZURE_CONNECTION_STRING\n    if (!AZURE_CONNECTION_STRING) {\n        send(new Error('No connection string was provided. Please add AZURE_CONNECTION_STRING to the global settings of your account'))\n    }\n    \n    const { deviceId, methodName, payload, responseTimeoutInSeconds = 10 } = options.requiredProperties\n    \n    if (!deviceId || !methodName) {\n        send(new Error('REQUIRED: deviceId, methodName'))\n    }\n\n    const client = Client.fromConnectionString(AZURE_CONNECTION_STRING)\n\n    client.invokeDeviceMethod(deviceId, { methodName, payload, responseTimeoutInSeconds }, function (err, result) {\n        if (err) {\n            console.log(err)\n            send(new Error('Failed to invoke method \\'' + methodName + '\\': ' + err.message))\n        } else {\n            console.log('Response from ' + methodName + ' on ' + deviceId + ':')\n            send(null, result)\n        }\n    })\n}\n\nmain()",
   "metadata": {
-    "author": "ward@waylay.io",
+    "author": "Waylay",
     "category": "Azure",
     "description": "Invoke a function on an Azure connected device.\n<ul>\n    <li>methodName: The name of the function on the device which you would like to invoke</li>\n    <li>responseTimeoutInSeconds: Max time to wait for a response. (in seconds) (default: 10)</li>\n    <li>deviceId: the device name registered on Azure</li>\n    <li>payload: The value to provide to the invoked function</li>\n</ul>\n\n\n<b>REQUIRED: </b>\nThis function requires AZURE_CONNECTION_STRING to be configured in the global settings (account > global settings)\n\nNOTE: Azure has three kinds of connection strings. You can read about the 'IoT Hub Connection String' at:\n<br>https://devblogs.microsoft.com/iotdev/understand-different-connection-strings-in-azure-iot-hub/",
     "documentationURL": "https://docs.microsoft.com/en-us/rest/api/iothub/service/invokedevicemethod",
