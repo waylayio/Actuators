@@ -1,10 +1,10 @@
 {
   "name": "sendTwitterDM",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "type": "actuator",
   "script": "var OAuthConsumerKey = options.globalSettings.OAuthConsumerKey\nvar OAuthConsumerSecret = options.globalSettings.OAuthConsumerSecret\nvar OAuthAccessToken = options.globalSettings.OAuthAccessToken\nvar OAuthAccessTokenSecret = options.globalSettings.OAuthAccessTokenSecret\nvar message = waylayUtil.template(options, options.requiredProperties.message)\nvar screenName = waylayUtil.getProperty(options, \"screenName\")\n\nvar sendClient = new twitter({\n  consumer_key: OAuthConsumerKey,\n  consumer_secret: OAuthConsumerSecret,\n  access_token_key: OAuthAccessToken,\n  access_token_secret: OAuthAccessTokenSecret\n});\n\n\nvar replaceAll = function (str, find, replace) {\n  return str.replace(new RegExp(find, 'g'), replace);\n}\n\nif(message !== undefined && screenName !== undefined) {\n    //replace for &CR with \\r\\n\n    message = replaceAll(message, \"&CR\", \"\\r\\n\")\n    var form = {\n        text: message,\n        screen_name: screenName\n    };\n    try{\n        sendClient.post('direct_messages/new', form, function(error, dm, response){\n            if(error){\n                console.log(\"RESPONSE\", error); // Raw response object. \n                send(new Error(error))\n            }\n            send() \n        });\n    } catch(err){\n        console.log(err)\n        send(new Error(err))\n    }\n} else {\n    send(new Error(\"Missing message and/or screenName\"))\n}",
   "metadata": {
-    "author": "",
+    "author": "Waylay",
     "category": "Social",
     "description": "This actuator sends a Twitter <strong>direct message</strong>.\n<pre>\n    Make sure you follow <a href=\"https://twitter.com/waylay_io\">@waylay_io</a> otherwise you won't be able to receive the messages.\n</pre>\nMessage is pre-processed using waylayUtil.template package.\n\nYou will need to get twitter API keys by registering your app, \nand provide these keys in the global settings.\n",
     "documentationURL": "",
