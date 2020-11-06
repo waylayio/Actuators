@@ -1,0 +1,23 @@
+{
+  "name": "createAlarm",
+  "version": "1.0.11",
+  "type": "actuator",
+  "script": "const moment = require('moment')\n\nconst severity = options.requiredProperties.severity\nconst type = options.requiredProperties.type \nconst resource = options.node.RESOURCE\nconst text = options.requiredProperties.text || ''\nconst taskId = options.task.TASK_ID\n\nif (!resource) {\n  send(new Error('Resource not configured'))\n}\n\nif (!type || !severity) {\n  send(new Error('Missing properties'))\n}\n\nconst alarm = {\n  severity: severity,\n  type: type,\n  task: taskId,\n  text: text,\n  source: { id: resource },\n  timestamp: moment().unix() * 1000\n}\n\nconsole.log('alarm', alarm)\n\nif (resource === undefined) {\n  send(new Error('resource not defined'))\n}\n\nwaylay.alarms.create(alarm).then((resp) => {\n  send(null, { rawData : resp })\n}).catch((err) => {\n  send(new Error('Storing alarm failed: ' + err.response.data.error))\n})\n",
+  "metadata": {
+    "author": "",
+    "category": "",
+    "description": "<h4>Sensor/Actuator Name</h4>\n<br>\nCreates a new alarms of a chosen type and severity for a configured resource\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        text (optional): Description of the alarm \n    </li>\n    <li>\n        severity:  WARNING, MINOR, MAJOR or CRITICAL\n    </li>\n    <li>\n        type: Type of the alarm (can be string of choice)\n    </li>\n</ul>",
+    "documentationURL": "",
+    "iconURL": "https://static.waylay.io/icons/alarm.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "text",
+      "severity",
+      "type"
+    ],
+    "requiredRawData": []
+  },
+  "dependencies": {
+    "moment": "^2.29.1"
+  }
+}

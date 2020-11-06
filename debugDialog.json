@@ -1,0 +1,20 @@
+{
+  "name": "debugDialog",
+  "version": "1.0.11",
+  "type": "actuator",
+  "script": "const handlebars = require('handlebars')\n\nconst message = options.requiredProperties.message\n\nconst context = options.rawData\n\nconst compiledTemplate = handlebars.compile(message)\nconst result = compiledTemplate(context)\n\nsend(null, { message: result })",
+  "metadata": {
+    "author": "",
+    "category": "",
+    "description": "<h4>Debug Actuator</h4>\n<br>\nDebug dialog actuator, can be used while debugging new templates.\nThe provided message will pop up as a toast in the designer window.\n<br><br>\n<br>\n<b>Properties</b>\n<ul>\n    <li>\n        message: The message to be shown in the debug dialog\n    </li>\n</ul>",
+    "iconURL": "https://static.waylay.io/plugs/icons/bubble.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "message"
+    ],
+    "requiredRawData": []
+  },
+  "dependencies": {
+    "handlebars": "4.7.6"
+  }
+}

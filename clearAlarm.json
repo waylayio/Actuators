@@ -1,0 +1,18 @@
+{
+  "name": "clearAlarm",
+  "version": "1.0.8",
+  "type": "actuator",
+  "script": "const resource = options.node.RESOURCE\nconst type = options.requiredProperties.type\n\nif (!type) {\n  send(new Error('Missing property type'))\n}\n\nif (resource === undefined || resource === '') {\n  send(new Error('resource not defined'))\n}\n\nconst alarmFilter = {\n  source: resource,\n  status: ['ACTIVE', 'ACKNOWLEDGED'],\n  all: true,\n  type\n}\n\nwaylay.alarms.search(alarmFilter)\n  .then((searchResult) => {\n    if (searchResult.alarms) {\n      console.log('Found ' + searchResult.alarms.length + ' alarms to clear')\n      Promise.all(searchResult.alarms.map((alarm) => {\n        return waylay.alarms.update(alarm.id, { status: 'CLEARED' })\n      }))\n        .then(() => {\n          send()\n        })\n        .catch((err) => {\n          send(new Error('Clearing alarms failed: ' + err))\n        })\n    } else {\n      send()\n    }\n  })\n  .catch((err) => {\n    send(err)\n  })\n",
+  "metadata": {
+    "author": "",
+    "category": "",
+    "description": "<h4>clearAlarm Actuator</h4>\n<br>\nClear all the active alarms of a given type for the configured resource.\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        type: The alarm type you want to clear\n    </li>\n</ul>\n\n",
+    "documentationURL": "",
+    "iconURL": "https://static.waylay.io/icons/clear-alarm.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "type"
+    ],
+    "requiredRawData": []
+  }
+}

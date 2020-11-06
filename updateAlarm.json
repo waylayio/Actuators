@@ -1,0 +1,19 @@
+{
+  "name": "updateAlarm",
+  "version": "1.0.6",
+  "type": "actuator",
+  "script": "const alarmId = options.requiredProperties.alarmId\nconst severity = options.requiredProperties.severity\nconst status = options.requiredProperties.status\n\nif (alarmId === undefined) {\n  send(new Error('Missing property'))\n}\n\nwaylay.alarms.update(alarmId, { severity, status }).then((response) => {\n  console.log(response)\n  send()\n}).catch(function (err) {\n  send(new Error('Updating alarm failed: ' + err))\n})\n",
+  "metadata": {
+    "author": "",
+    "category": "",
+    "description": "<h4>updateAlarm Actuator</h4>\n<br>\nUpdate status and/or severity of an alarm.\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        alarmId: id of the alarm to update (UUID)\n    </li>\n    <li>\n        status (optional): ACTIVE or ACKNOWLEDGED\n    </li>\n    <li>\n        severity (optional): WARNING, MINOR, MAJOR or CRITICAL\n    </li>\n</ul>",
+    "iconURL": "https://static.waylay.io/icons/update%20alarm.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "alarmId",
+      "status",
+      "severity"
+    ],
+    "requiredRawData": []
+  }
+}

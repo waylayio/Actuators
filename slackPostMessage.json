@@ -1,0 +1,23 @@
+{
+  "name": "slackPostMessage",
+  "version": "1.0.11",
+  "type": "actuator",
+  "script": "const axios = require('axios')\nconst channel = options.requiredProperties.channel\nconst text = options.requiredProperties.text\nconst WaylayClient = require('@waylay/client')\n\n\nconst client = new WaylayClient({\n  token: options.globalSettings.waylayToken\n})\nconsole.log(client)\n\nclient.hoard.getTokens('slack', { scope: 'organisation' })\n  .then((resp) => {\n    const accessToken = resp.bot.bot_access_token\n\n    if (accessToken === undefined || channel === undefined || text === undefined) {\n      send(new Error('Missing property'))\n    }\n\n    axios.post('https://slack.com/api/chat.postMessage',\n      { text, channel },\n      { headers: { Authorization: `Bearer ${accessToken}` } }\n    ).then(() => {\n      send()\n    }).catch((error) => {\n      send(new Error('Error posting to slack api: ' + error))\n    })\n  })\n  .catch((error) => {\n    send(new Error('Error fetching token from hoard: ' + error.response.data.message))\n  })\n",
+  "metadata": {
+    "author": "",
+    "category": "",
+    "description": "<h4>slackPostMessage Actuator</h4>\n<br>\nSends a message to a Slack channel or user.\nTo use this actuator, the connection with slack should be configured in your settings under connections.\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        channel: Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name\n    </li>\n    <li>\n        text: The message that will be sent\n    </li>\n</ul>",
+    "documentationURL": "https://api.slack.com/methods/chat.postMessage",
+    "iconURL": "https://static.waylay.io/plugs/icons/slack.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "channel",
+      "text"
+    ],
+    "requiredRawData": []
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "@waylay/client": "^2.20.0"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "TwilioSMS",
+  "version": "2.0.13",
+  "type": "actuator",
+  "script": "const Twilio = require('twilio')\n\nconst sendSMS = (to, message) => {\n  const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)\n  return client.messages.create({\n    to: to,\n    from: from,\n    body: message\n  })\n    .then((message) => {\n      console.info('Success! The SID for this SMS message is:')\n      console.info(message.sid)\n      console.info('Message sent on:')\n      console.info(message.dateCreated)\n    })\n    .catch((error) => {\n      return Promise.reject(new Error('There was an error.' + JSON.stringify(error)))\n    })\n}\n\nconst TWILIO_ACCOUNT_SID = options.requiredProperties.TWILIO_ACCOUNT_SID\nconst TWILIO_AUTH_TOKEN = options.requiredProperties.TWILIO_AUTH_TOKEN\n\nconst message = options.requiredProperties.message\nconst to = options.requiredProperties.to\nconst from = options.requiredProperties.from\n\nconst toList = to.trim().split(',')\n\nif (TWILIO_ACCOUNT_SID === undefined || message === undefined || TWILIO_AUTH_TOKEN === undefined || to === undefined || from === undefined) {\n  send(new Error('Missing property'))\n} else {\n  const promises = toList.map((sendTO) => {\n    return sendSMS(sendTO, message)\n  })\n  Promise.all(promises).then((resp) => {\n    send(null,{rawData : {response: resp}})\n  }).catch((err) => {\n    send(new Error('SMS failed: ' + err))\n  })\n}\n",
+  "metadata": {
+    "author": "",
+    "description": "<h4>TwilioSMS Actuator</h4>\n<br>\nAllows you to send SMS to one or more contacts using the Twillio service.\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        to: Comma sperated list of phonenumbers with county prefix (e.g. BE = +32)\n    </li>\n    <li>\n        from: Twillio phonenumber that will send the message (must be owned by provided account)\n    </li>\n    <li>\n        message: The message being sent\n    </li>\n    <li>\n        TWILIO_ACCOUNT_SID: Twillio account SID\n    </li>\n    <li>\n        TWILIO_AUTH_TOKEN: Twillio auth token\n    </li>\n</ul>\n<p>We recommend to store the TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN as encrypted values in <a href=\"https://docs.waylay.io/features/rules/vault/\" target=\"_blank>vault</a> and insert them in the properties using <a href=\"https://docs.waylay.io/plugins/sensors-and-actuators/#properties-declarative-binding\" target=\"_blank>declarative binding</a></p>",
+    "iconURL": "https://static.waylay.io/plugs/icons/twillio.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "message",
+      "to",
+      "from",
+      "TWILIO_ACCOUNT_SID",
+      "TWILIO_AUTH_TOKEN"
+    ],
+    "requiredRawData": []
+  },
+  "dependencies": {
+    "twilio": "^3.49.4"
+  }
+}

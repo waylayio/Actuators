@@ -1,0 +1,29 @@
+{
+  "name": "mandrillMail",
+  "version": "1.0.18",
+  "type": "actuator",
+  "script": "const axios = require('axios')\nconst validator = require('email-validator')\n\nconst FROM = options.requiredProperties.from\nconst TO = options.requiredProperties.to\nconst REPLY_TO = options.requiredProperties.reply || FROM\nconst MANDRILL_KEY = options.requiredProperties.MANDRILL_KEY\nconst message = options.requiredProperties.message\nconst subject = options.requiredProperties.subject\nconst send_at = options.requiredProperties.send_at\n\nconst sendMail = (data) => {\n  const body = {\n    key: MANDRILL_KEY,\n    send_at: send_at,\n    message: {\n      html: message,\n      subject: subject,\n      from_email: FROM,\n      from_name: FROM,\n      to: [\n        {\n          email: TO,\n          name: TO,\n          type: 'to'\n        }\n      ],\n      headers: {\n        'Reply-To': REPLY_TO\n      }\n    }\n  }\n  if (data) {\n    body.message.attachments = [\n      {\n        name: 'Attachment.pdf',\n        type: 'application/pdf',\n        content: data.toString('base64')\n      }\n    ]\n  }\n  axios.post('https://mandrillapp.com/api/1.0/messages/send.json', body).then((resp) => {\n    const { data: body } = resp\n    if (body[0] && body[0].status && body[0].status === 'rejected') {\n      send(JSON.stringify(body))\n    } else {\n      send(null, { rawData: { response: resp } })\n    }\n  }).catch((error) => {\n    send(new Error(error))\n  })\n}\n\nif (!FROM || !TO || !message || !subject) {\n  send(new Error('Missing property'))\n}\n\nif (options.requiredProperties.MANDRILL_KEY === undefined) {\n  send(new Error('Error missing MANDRILL_KEY, please provide it in the properties'))\n} else {\n  if (validator.validate(TO) && validator.validate(FROM)) {\n    const pdfUrl = options.requiredProperties.pdfURL\n    if (pdfUrl && pdfUrl !== '') {\n      axios.get(pdfUrl, {\n        responseType: 'arraybuffer',\n        headers: {\n          Accept: 'application/pdf'\n        }\n      })\n        .then((response) => {\n          sendMail(response.data)\n        })\n    } else {\n      sendMail()\n    }\n  } else {\n    const error = 'Emails are not valid: to=' + TO + ', from=' + options.requiredProperties.from\n    send(new Error(error))\n  }\n}",
+  "metadata": {
+    "author": "",
+    "category": "",
+    "description": "<h4>mandrilMail Actuator</h4>\n<br>\nSends email using the mandril api.\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        from: Email address the email is sent from (make sure you have registered the domain with mandril)\n    </li>\n     <li>\n        to: Email address the email is sent to\n    </li>\n     <li>\n        message: Contens of the email\n    </li>\n     <li>\n        subject: Subject of the email\n    </li>\n     <li>\n        reply (optional): Reply-to email address\n    </li>\n     <li>\n        send_at (optional): Specify a date and time when the email should be sent (as a UTC timestamp in YYYY-MM-DD HH:MM:SS format)\n    </li>\n     <li>\n        pdfURL (optional): Link to pdf that should be attached\n    </li>\n    <li>\n        MANDRILL_KEY: The mandril api key (we do not recommend to fill in the api key as plaintext use, <a href=\"https://docs.waylay.io/plugins/sensors-and-actuators/#properties-declarative-binding\" target=\"_blank\">declerative binding</a> in combination with <a href=\"https://docs.waylay.io/features/rules/vault/\" target=\"_blank\">vault</a>)\n    </li>\n</ul>",
+    "documentationURL": "",
+    "iconURL": "https://static.waylay.io/plugs/icons/mail.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "from",
+      "to",
+      "message",
+      "subject",
+      "reply",
+      "send_at",
+      "pdfURL",
+      "MANDRILL_KEY"
+    ],
+    "requiredRawData": []
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "email-validator": "^2.0.4"
+  }
+}

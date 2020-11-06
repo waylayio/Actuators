@@ -1,0 +1,17 @@
+{
+  "name": "executeCommand",
+  "version": "1.0.12",
+  "type": "actuator",
+  "script": "const resource = options.node.RESOURCE\nconst command = options.requiredProperties.command\nlet properties = options.requiredProperties.properties\n\nif (!command) {\n  send(new Error('Missing property'))\n}\n\nif (!resource) {\n    send(new Error('Resource not configured'))\n}\n\ntry {\n  properties = properties === '' || properties === undefined ? {} : JSON.parse(properties)\n} catch (err) {\n  send(new Error('Error while parsing properties to JSON: ' + err))\n}\n\nwaylay.resources.executeCommand(resource, command, properties)\n  .then((response) => {\n    send(null, { rawData : {response} })\n  })\n  .catch(err => {\n    send(new Error(err))\n  })",
+  "metadata": {
+    "author": "",
+    "description": "<h4>executeCommand Actuator</h4>\n<br>\nExecutes command for a resource. \nA command in turn is resolved to a particular actuator. \n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        command: The command configured on the resource\n    </li>\n     <li>\n        properties (optional): Properties to overwrite default properties of the command (It expects an JSON object where the key is the same as the property you wish to overwrite. Only provide the properies you wish to override, the other onses will be kept.)\n    </li>\n</ul>\n\n<br>\n<b>Example: properties</b>\nFor instance, if the command resolves to the <a href=\"https://docs.waylay.io/plugins/twiliosms/\" target=\"_blank\">twillioSMS</a> actuator, you can can for example provide input properties to change to who the message is being sent (to) and what the actual message is (message) while the other ones are kept.\ne.g.:\n<pre>\n{ \n \"message\" : \"I will be shown instead of that silly message configured in the command!\",\n \"to\": \"+32495123456\"\n}\n</pre>\n\nMore info about commands can be found <a href=\"https://docs.waylay.io/features/resources/resources/#commands\" target=\"_blank\">here</a>",
+    "iconURL": "https://static.waylay.io/plugs/icons/command.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "command",
+      "properties"
+    ],
+    "requiredRawData": []
+  }
+}

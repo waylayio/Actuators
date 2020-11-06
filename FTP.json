@@ -1,0 +1,27 @@
+{
+  "name": "FTP",
+  "version": "2.0.4",
+  "type": "actuator",
+  "script": "const SftpClient = require('ssh2-sftp-client')\nconst moment = require('moment')\n\nconst username = options.requiredProperties.FTP_USR\nconst password = options.requiredProperties.FTP_PWD\nconst host = options.requiredProperties.FTP_HOST\nconst port = options.requiredProperties.FTP_PORT\nconst path = options.requiredProperties.FTP_FILEPATH\n\nconst resource = options.node.RESOURCE\n\nconst fileName = options.requiredProperties.filename || resource + ' ' + moment().toISOString() + '.txt'\nconst data = options.requiredProperties.data\n\nif (!data || !username || !password || !host || !port || !path) {\n  send(new Error('Missing propert'))\n}\nif (!resource) {\n  send(new Error('Resource not configured on node'))\n}\n\nconst buffer = Buffer.from(data)\nconst client = new SftpClient()\n\nclient.connect({\n  host,\n  port,\n  username,\n  password\n}).then(() => {\n  client.put(buffer, `${path}${fileName}`).then(() => {\n    send()\n  }).catch((err) => {\n    send(new Error('File upload error: ' + err))\n  })\n}).catch((err) => {\n  send(new Error('Connection error: ' + err))\n})\n",
+  "metadata": {
+    "author": "",
+    "category": "",
+    "description": "<h4>FTP Actuator</h4>\n<br>\nThis actuator allows you to send a file to and FTP server using SFTP. \n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        FTP_USR: FTP server username\n    </li>\n    <li>\n        FTP_PWD: FPT server password (we do not recommend to fill in the password as plaintext use <a href=\"https://docs.waylay.io/plugins/sensors-and-actuators/#properties-declarative-binding\" target=\"_blank\">declerative binding</a> in combination with <a href=\"https://docs.waylay.io/features/rules/vault/\" target=\"_blank\">vault</a>)\n    </li>\n    <li>\n        FTP_HOST: FTP server fully qualified domain name\n    </li>\n    <li>\n        FTP_PORT: Port FTP server is listening on\n    </li>\n    <li>\n        FTP_FILEPATH: The location on the FTP server where the file will be sent to\n    </li>\n    <li>\n        filename: (Optional) Name of the file that will be sent to the FTP server (if left empty a filename will be generated)\n    </li>\n    <li>\n        data: The data that will be sent to the FTP server \n    </li>\n</ul>",
+    "iconURL": "https://static.waylay.io/plugs/icons/ftp.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "FTP_USR",
+      "FTP_PWD",
+      "FTP_HOST",
+      "FTP_PORT",
+      "FTP_FILEPATH",
+      "filename",
+      "data"
+    ],
+    "requiredRawData": []
+  },
+  "dependencies": {
+    "ssh2-sftp-client": "^5.3.1",
+    "moment": "^2.29.1"
+  }
+}

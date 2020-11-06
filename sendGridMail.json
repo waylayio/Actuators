@@ -1,0 +1,24 @@
+{
+  "name": "sendGridMail",
+  "version": "1.0.6",
+  "type": "actuator",
+  "script": "const axios = require('axios')\nconst validator = require('email-validator')\n\nconst to = options.requiredProperties.to\nconst from = options.requiredProperties.from\nconst SENDGRID_KEY = options.requiredProperties.SENDGRID_KEY\nconst subject = options.requiredProperties.subject\nconst message = options.requiredProperties.message\n\nif (SENDGRID_KEY === undefined || message === undefined || subject === undefined || from === undefined || to === undefined) {\n  send(new Error('Missing property'))\n}\nif (!validator.validate(to) || !validator.validate(from)) {\n  send(new Error('One or both emails are not valid: to=' + to + ', from=' + from))\n}\nconst payload = {\n  html: message,\n  subject: subject,\n  from: options.requiredProperties.from,\n  to: to\n}\n\naxios.post('https://api.sendgrid.com/api/mail.send.json', { payload }, { headers: { Authorization: `Bearer ${SENDGRID_KEY}` } }).then((response) => {\n  send()\n})\n  .catch((error) => {\n    send(new Error(error))\n  })\n",
+  "metadata": {
+    "author": "",
+    "description": "<h4>sendGridMail Actuator</h4>\n<br>\nSends email to recipient using SendGrid.\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        from: The email adrress the mail is sent from\n    </li>\n    <li>\n        to: The email adrress the mail is sent to\n    </li>\n    <li>\n        message: The contents of the mail\n    </li>\n    <li>\n        subject: The subject of the mail\n    </li>\n    <li>\n        SENDGRID_KEY: The SendGrid key (we do not recommend to fill in the key as plaintext use, <a href=\"https://docs.waylay.io/plugins/sensors-and-actuators/#properties-declarative-binding\" target=\"_blank\">declerative binding</a> in combination with <a href=\"https://docs.waylay.io/features/rules/vault/\" target=\"_blank\">vault</a>)\n    </li>\n</ul>",
+    "iconURL": "https://static.waylay.io/plugs/icons/sendgrid-128.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "from",
+      "to",
+      "message",
+      "subject",
+      "SENDGRID_KEY"
+    ],
+    "requiredRawData": []
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "email-validator": "^2.0.4"
+  }
+}

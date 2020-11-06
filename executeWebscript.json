@@ -1,0 +1,22 @@
+{
+  "name": "executeWebscript",
+  "version": "1.0.6",
+  "type": "actuator",
+  "script": "const jwtDecode = require('jwt-decode')\nconst { tenant: tenantId } = jwtDecode(options.globalSettings.waylayToken)\nconst name = options.requiredProperties.name\nconst json = options.requiredProperties.body\nconst version = options.requiredProperties.version || 'latest'\n\nlet parsedJSON\nif (!name) {\n  send(new Error('Missing property'))\n}\nif(json){\n  try {\n    parsedJSON = JSON.parse(json)\n  } catch (err) {\n    send(new Error('Error parsing JSON: ' + err))\n  }\n}\nwaylay.webscripts.call(tenantId, name, version, parsedJSON)\n  .then((response) => send(null,{ rawData : {response} }))\n  .catch(err => send(new Error(err)))\n",
+  "metadata": {
+    "author": "",
+    "category": "",
+    "description": "<h4>executeWebscript Actuator</h4>\n<br>\nThis actuator allows you to trigger a waylay webscript execution (<a href=\"https://webscripts.waylay.io/webscripts\" target=\"_blank\">https://webscripts.waylay.io/webscripts</a>).\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        name: The name of the webscript you wish to trigger\n    </li>\n    <li>\n        version (optional): The version of the webscript you want to trigger\n    </li>\n    <li>\n        body: Body passed directly to the webscript as a JSON\n    </li>\n</ul>",
+    "iconURL": "https://static.waylay.io/plugs/icons/Cloud-Functions.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "name",
+      "version",
+      "body"
+    ],
+    "requiredRawData": []
+  },
+  "dependencies": {
+    "jwt-decode": "^3.0.0"
+  }
+}
