@@ -1,0 +1,26 @@
+{
+  "name": "zendesk",
+  "version": "1.0.21",
+  "type": "actuator",
+  "script": "const axios = require('axios')\n\nconst username = options.requiredProperties.ZENDESK_USER\nconst token = options.requiredProperties.ZENDESK_KEY\nconst subject = options.requiredProperties.subject\nconst message = options.requiredProperties.message\nconst domain = options.requiredProperties.ZENDESK_DOMAIN\nconst requester = options.requiredProperties.requester\n\nif (!username || !token || !subject || !message || !domain || !requester) {\n  send(new Error('Missing properties'))\n}\nconst url = 'https://' + domain + '.zendesk.com/api/v2/tickets.json'\nconst data = {\n  ticket: {\n    requester: {\n      name: requester\n    },\n    subject: subject,\n    comment: message\n  }\n}\nconst auth = {\n  username: username+ '/token',\n  password: token\n}\n\naxios.post(url, data, { auth }).then(response => {\n  send(null,{rawData : response.data})\n}).catch(error => {\n  send(new Error(error))\n})\n",
+  "metadata": {
+    "author": "",
+    "category": "",
+    "description": "<h4>zendesk Actuator</h4>\n<br>\nCreates zendesk tickets.\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        message: Message provided with the ticket\n    </li>\n    <li>\n        subject: Subject of the ticket\n    </li>\n    <li>\n        ZENDESK_USER: Zendesk user (email)\n    </li>\n    <li>\n        ZENDESK_KEY: Zendesk API token (<a href=\"https://support.zendesk.com/hc/en-us/articles/226022787-Generating-a-new-API-token-\" target=”_blank”>more info</a>)\n    </li>\n    <li>\n        ZENDESK_DOMAIN: E.g.: 'waylayhelp' is the domain for waylay support\n    </li>\n    <li>\n        requester: Requester of the ticket\n    </li>\n</ul>",
+    "documentationURL": "https://developer.zendesk.com/rest_api/docs/core/tickets",
+    "iconURL": "https://static.waylay.io/plugs/icons/zendesk.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "subject",
+      "message",
+      "ZENDESK_USER",
+      "ZENDESK_KEY",
+      "ZENDESK_DOMAIN",
+      "requester"
+    ],
+    "requiredRawData": []
+  },
+  "dependencies": {
+    "axios": "^0.20.0"
+  }
+}

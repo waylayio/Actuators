@@ -1,0 +1,25 @@
+{
+  "name": "vonageSMS",
+  "version": "1.0.2",
+  "type": "actuator",
+  "script": "const Vonage = require('@vonage/server-sdk')\n\nconst VONAGE_KEY = options.requiredProperties.VONAGE_KEY\nconst VONAGE_SECRET = options.requiredProperties.VONAGE_SECRET\nconst message = options.requiredProperties.message\nconst to = options.requiredProperties.to\nconst from = options.requiredProperties.from || 'Waylay'\n\nif (VONAGE_SECRET === undefined || message === undefined ||\n  VONAGE_KEY === undefined || to === undefined) {\n  send(new Error('Missing property'))\n} else {\n  const vonage = new Vonage({\n    apiKey: VONAGE_KEY,\n    apiSecret: VONAGE_SECRET\n  })\n\n  vonage.message.sendSms(from, to, message, (err, responseData) => {\n    if (err) {\n      send(new Error(err))\n    } else {\n      if (responseData.messages[0].status === '0') {\n        console.log('Message sent successfully.')\n        send()\n      } else {\n        send(new Error(`Message failed with error: ${responseData.messages[0]['error-text']}`))\n      }\n    }\n  })\n}",
+  "metadata": {
+    "author": "",
+    "category": "",
+    "description": "<h4>vonageSMS Actuator</h4>\n<br>\nActuator to send SMS messages using the Vonage sdk (formerly known as Nexmo).\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        VONAGE_KEY: Vonage api key\n    </li>\n     <li>\n        VONAGE_SECRET: Vonage api secret (we do not recommend to fill in the secret as plaintext, use <a href=\"https://docs.waylay.io/plugins/sensors-and-actuators/#properties-declarative-binding\" target=\"_blank\">declerative binding</a> in combination with <a href=\"https://docs.waylay.io/features/rules/vault/\" target=\"_blank\">vault</a>)\n    </li>\n     <li>\n        message: The message that will be sent\n    </li>\n     <li>\n        to: Phone number of the recipiant\n    </li>\n     <li>\n        from (optional): Phone number of the sender\n    </li>\n</ul>",
+    "documentationURL": "https://docs.nexmo.com/index.php/sms-api/send-message",
+    "iconURL": "https://static.waylay.io/plugs/icons/nexmo.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "from",
+      "to",
+      "message",
+      "VONAGE_KEY",
+      "VONAGE_SECRET"
+    ],
+    "requiredRawData": []
+  },
+  "dependencies": {
+    "@vonage/server-sdk": "^2.10.2"
+  }
+}

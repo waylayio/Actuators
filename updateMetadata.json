@@ -1,0 +1,17 @@
+{
+  "name": "updateMetadata",
+  "version": "1.0.2",
+  "type": "actuator",
+  "script": "const resource = options.node.RESOURCE\nconst metadata = options.requiredProperties.metadata\nlet parsedMetadata\n\nif (resource === undefined || resource === '') {\n  send(new Error('resource not defined'))\n}\n\nif (!metadata) {\n  send(new Error('Missing property'))\n}\n\ntry {\n  parsedMetadata = JSON.parse(metadata)\n} catch (err) {\n  send(new Error('Failed to parse to object: ' + err))\n}\n\nwaylay.resources.update(resource, parsedMetadata)\n  .then(() => {\n    send()\n  })\n  .catch(err => {\n    console.log('err', err.response)\n    send(new Error('Failed to update resource: ' + err))\n  })\n",
+  "metadata": {
+    "author": "",
+    "category": "",
+    "description": "<h4>updateMetadata Actuator</h4>\n<br>\nAllows you to add the metadata to a resource, If the resource you try to append metadata to does not exist, the resource will be created.\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        metadata: a json object with the keys and values you want to add to the resource metadata\n    </li>\n</ul>",
+    "iconURL": "https://static.waylay.io/plugs/icons/waylay-update-meta-data.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "metadata"
+    ],
+    "requiredRawData": []
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "TwilioCall",
+  "version": "1.0.8",
+  "type": "actuator",
+  "script": "const Twilio = require('twilio')\n\nconst TWILIO_ACCOUNT_SID = options.requiredProperties.TWILIO_ACCOUNT_SID\nconst TWILIO_AUTH_TOKEN = options.requiredProperties.TWILIO_AUTH_TOKEN\nconst message = options.requiredProperties.message\nconst to = options.requiredProperties.to\nconst from = options.requiredProperties.from\n\nif (message=== undefined || TWILIO_ACCOUNT_SID === undefined || TWILIO_AUTH_TOKEN === undefined || to === undefined || from === undefined) {\n  send(new Error('Missing property'))\n} else {\n  const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)\n  client.calls.create({\n    to: to,\n    from: from,\n    twiml: '<Response><Say voice=\"woman\" loop=\"2\">' + message + '</Say></Response>'\n  }).then((call) => {\n    console.info('Success! Call is being made:')\n    console.info(call.sid)\n    send(null, { rawData : { call } })\n  }).catch((error) => {\n    send(new Error('There was an error.' + JSON.stringify(error)))\n  })\n}",
+  "metadata": {
+    "author": "",
+    "category": "",
+    "description": "<h4>TwillioCall Actuator</h4>\n<br>\nThe provided message will be read to the recipient 2 times by a female voice.\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        to: The recipiants phone number\n    </li>\n    <li>\n        from: The callers phone number\n    </li>\n    <li>\n        message: The message that will be read\n    </li>\n    <li>\n        TWILIO_ACCOUNT_SID: The account sid for your twillio account\n    </li>\n    <li>\n        TWILIO_AUTH_TOKEN:  The auth token for your twillio account (we do not recommend to fill in the auth token as plaintext, use <a href=\"https://docs.waylay.io/plugins/sensors-and-actuators/#properties-declarative-binding\" target=\"_blank\">declerative binding</a> in combination with <a href=\"https://docs.waylay.io/features/rules/vault/\" target=\"_blank\">vault</a>)\n    </li>\n</ul>",
+    "documentationURL": "",
+    "iconURL": "https://static.waylay.io/plugs/icons/twilio_call.png",
+    "supportedStates": [],
+    "requiredProperties": [
+      "to",
+      "message",
+      "TWILIO_ACCOUNT_SID",
+      "TWILIO_AUTH_TOKEN",
+      "from"
+    ],
+    "requiredRawData": []
+  },
+  "dependencies": {
+    "twilio": "^3.49.4"
+  }
+}
