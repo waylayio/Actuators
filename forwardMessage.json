@@ -1,16 +1,16 @@
 {
   "name": "forwardMessage",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "type": "actuator",
-  "script": "async function main () {\n  const resource = options.node.RESOURCE\n  const { payload } = options.requiredProperties\n\n  if (!resource) {\n    throw new Error('No resource provided')\n  }\n\n  const body = parsePayload(payload)\n\n  await waylay.data.postSeries(resource, body, { forward: true, store: false })\n\n  send()\n}\n\nfunction parsePayload (payload) {\n  if (!payload) {\n    throw new Error('No payload provided')\n  }\n\n  try {\n    payload = JSON.parse(payload)\n  } catch (_) {\n    console.log(payload)\n    throw new Error('payload has to be a valid JSON object')\n  }\n\n  return payload\n}\n\nmain().catch(send)\n",
+  "script": "async function main () {\n  const { payload } = options.requiredProperties\n  const body = parsePayload(payload)\n\n  const resource = options.node.RESOURCE || body.id\n\n  if (!resource) {\n    throw new Error('No resource provided')\n  }\n\n  await waylay.data.postSeries(resource, body, { forward: true, store: false })\n\n  send()\n}\n\nfunction parsePayload (payload) {\n  if (!payload) {\n    throw new Error('No payload provided')\n  }\n\n  try {\n    payload = JSON.parse(payload)\n  } catch (_) {\n    console.log(payload)\n    throw new Error('payload has to be a valid JSON object')\n  }\n\n  return payload\n}\n\nmain().catch(send)\n",
   "metadata": {
     "author": "",
-    "description": "<h4>forwardMessage</h4>\n<br>\nSend the provided payload back into the waylay system for the engine to process in other tasks.\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        payload: the JSON object to send on the specified resource\n    </li>\n</ul>",
     "iconURL": "https://static.waylay.io/icons/forward-message.png",
-    "supportedStates": [],
+    "description": "<h4>forwardMessage</h4>\n<br>\nSend the provided payload back into the waylay system for the engine to process in other tasks.\n<br><br>\n<b>Properties</b>\n<ul>\n    <li>\n        payload: the JSON object to send on the specified resource\n    </li>\n</ul>",
+    "rawData": [],
     "requiredProperties": [
       "payload"
     ],
-    "requiredRawData": []
+    "supportedStates": []
   }
 }
